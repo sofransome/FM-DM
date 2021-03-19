@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80FFF2"
+    tools:context=".UserScore">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        android:text="Your Scores"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/ez"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120sp"
+        android:layout_gravity="center"
+        android:text="Easy                    39/50"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/med"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:layout_gravity="center"
+        android:text="Medium              39/50"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/hard"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:layout_gravity="center"
+        android:text="Hard                    39/50"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+    <Button
+        android:onClick="goto_SigninAgain"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:layout_gravity="center"
+        android:text="SIGN OUT"
+        android:background="#00E1FF"
+        android:textSize="20sp"
+        />
+
+
+
+</LinearLayout>

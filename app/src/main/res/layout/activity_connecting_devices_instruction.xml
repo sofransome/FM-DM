@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80FFF2"
+    tools:context="com.example.fmdm.ConnectingDevicesInstruction">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="1sp"
+        android:text="IMPORTANT INSTRUCTION!"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="          In using the app you need to connect your Mobile Device to the Glove via Bluetooth. First you need to Turn on your device Bluetooth and connect to HC-05."
+        android:textSize="13sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="1. Click ON to Turn on your Device' Bluetooth:"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+    <Button
+        android:id="@+id/btnONOFF"
+        android:text="ON/OFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:background="#00E1FF" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="2. Click Enable Discoverable to Enable Your Device Discoverability."
+        android:textSize="13sp" />
+    <Button
+        android:id="@+id/btnDiscoverable_on_off"
+        android:onClick="btnEnableDisable_Discoverable"
+        android:text="Enable Discoverable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:background="#00E1FF" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="3. Click Discover to Discover other Bluetooth Devices and Click HC-05 from the List."
+        android:textSize="13sp" />
+    <Button
+        android:onClick="btnDiscover"
+        android:text="Discover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFindUnpairedDevices"
+        android:layout_gravity="center"
+        android:background="#00E1FF" />
+    <ListView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/lvNewDevices" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:text="4. Click Start Connection."
+        android:textSize="13sp" />
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/btnStartConnection"
+        android:text="Start Connection"
+        android:background="#00E1FF"/>
+
+
+
+</LinearLayout>

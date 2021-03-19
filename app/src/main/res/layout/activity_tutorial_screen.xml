@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80FFF9"
+    tools:context=".TutorialScreen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        android:text="Tutorial"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:layout_gravity="center"
+        android:text="Perform the gesture as shown in the given picture that corresponds to a letter or number."
+        android:textSize="25sp"
+        />
+
+    <ImageView
+        android:id="@+id/imageview_Tutorial"
+        android:layout_width="230sp"
+        android:layout_height="220sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25sp" />
+
+    <TextView
+        android:id="@+id/tutorial_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1sp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:textSize="15sp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/editText_tutorial"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="tutorialDeleteButton"
+            android:text="x" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:onClick="goto_Levels"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55sp"
+            android:text="Skip All"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            />
+        <Button
+            android:onClick="skip"
+            android:id="@+id/skip_Easy"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:text="Skip"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+    <Button
+        android:onClick="submitAnswer"
+        android:id="@+id/tutorial_submit"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:layout_gravity="center"
+        android:background="#00E1FF"
+        android:text="SUBMIT ANSWER"
+        android:textSize="30sp"
+        />
+
+</LinearLayout>

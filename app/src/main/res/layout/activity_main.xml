@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80FFF2"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20sp"
+        android:text="WELCOME"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+    <ImageView
+        android:src="@drawable/logo"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        />
+    <EditText
+        android:id="@+id/et_studentidnumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp"
+        android:layout_marginTop="80sp"
+        android:hint="Student ID Number"
+        />
+    <EditText
+        android:id="@+id/et_studentpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp"
+        android:layout_marginTop="20sp"
+        android:hint="Password"
+        />
+    <Button
+        android:onClick="Signin"
+        android:layout_width="280sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        android:background="#00E1FF"
+        android:text="SIGN IN"
+        />
+    <Button
+        android:onClick="next"
+        android:layout_width="280sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        android:background="#00E1FF"
+        android:text="NEXT"
+        />
+
+
+</LinearLayout>
