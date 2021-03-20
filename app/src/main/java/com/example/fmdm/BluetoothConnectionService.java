@@ -122,6 +122,7 @@ public class BluetoothConnectionService {
 
         public void run(){
             BluetoothSocket tmp = null;
+            int counter = 0;
             Log.i(TAG, "RUN mConnectThread ");
 
             // Get a BluetoothSocket for a connection with the
@@ -146,7 +147,8 @@ public class BluetoothConnectionService {
                 // successful connection or an exception
                 do{
                     mmSocket.connect();
-                }while (!mmSocket.isConnected());
+                    counter++;
+                }while (!mmSocket.isConnected() && counter < 100);
 
                 Log.d(TAG, "run: ConnectThread connected.");
             } catch (IOException e) {
