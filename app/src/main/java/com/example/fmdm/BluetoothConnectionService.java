@@ -144,7 +144,9 @@ public class BluetoothConnectionService {
             try {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
-                mmSocket.connect();
+                do{
+                    mmSocket.connect();
+                }while (!mmSocket.isConnected());
 
                 Log.d(TAG, "run: ConnectThread connected.");
             } catch (IOException e) {

@@ -31,7 +31,7 @@ import java.util.UUID;
 
 public class ConnectingDevicesInstruction extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ConnectingDevicesIns";
 
 
     BluetoothAdapter mBluetoothAdapter;
