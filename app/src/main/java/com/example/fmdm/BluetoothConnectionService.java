@@ -142,25 +142,31 @@ public class BluetoothConnectionService {
 
             // Make a connection to the BluetoothSocket
 
-            try {
-                // This is a blocking call and will only return on a
-                // successful connection or an exception
-                do{
-                    mmSocket.connect();
-                    counter++;
-                }while (!mmSocket.isConnected() && counter < 100);
-
-                Log.d(TAG, "run: ConnectThread connected.");
-            } catch (IOException e) {
-                // Close the socket
+            do{
                 try {
-                    mmSocket.close();
-                    Log.d(TAG, "run: Closed Socket.");
-                } catch (IOException e1) {
-                    Log.e(TAG, "mConnectThread: run: Unable to close connection in socket " + e1.getMessage());
+                    mmSocket.connect();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                Log.d(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID_INSECURE );
-            }
+                counter++;
+            }while (!mmSocket.isConnected() && counter < 100);
+
+//            try {
+//                // This is a blocking call and will only return on a
+//                // successful connection or an exception
+//                    mmSocket.connect();
+//
+//                Log.d(TAG, "run: ConnectThread connected.");
+//            } catch (IOException e) {
+//                // Close the socket
+//                try {
+//                    mmSocket.close();
+//                    Log.d(TAG, "run: Closed Socket.");
+//                } catch (IOException e1) {
+//                    Log.e(TAG, "mConnectThread: run: Unable to close connection in socket " + e1.getMessage());
+//                }
+//                Log.d(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID_INSECURE );
+//            }
 
             //will talk about this in the 3rd video
             connected(mmSocket,mmDevice);
