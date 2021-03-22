@@ -20,12 +20,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    String URL = "https://thesis-api-usls.herokuapp.com/api/authentication-mobile";
+    String URL = "https://thesis-api-usls.herokuapp.com/authentication-api";
 
     EditText studentidnumber_et,studentpassword_et;
     String idnumber,password;
@@ -59,12 +64,24 @@ public class MainActivity extends AppCompatActivity {
         loading.show();
 
         StringRequest stringReq =  new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+
+            String message;
             @Override
             public void onResponse(String response) {
+                try {
+                    JSONObject jObject = new JSONObject(response);
+                    message = jObject.getString("message");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
 
                 Log.d("Response: ", response);
-//                Toast.makeText(MainActivity.this,"Response : "  + response,Toast.LENGTH_LONG).show();
-                if(response.equals("OK") ){
+
+                //                Toast.makeText(MainActivity.this,"Response : "  + response,Toast.LENGTH_LONG).show();
+                if(message.equals("Success") ){
 
                     showSuccessMessage();
 
