@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    String URL = "https://thesis-api-usls.herokuapp.com/authentication-api";
+    String URL = "https://thesis-api-usls.herokuapp.com/api/authentication-mobile";
 
     EditText studentidnumber_et,studentpassword_et;
     String idnumber,password;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("user_name",idnumber);
+                params.put("email",idnumber);
                 params.put("password",password);
 
                 return params;

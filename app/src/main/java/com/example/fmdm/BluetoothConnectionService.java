@@ -22,8 +22,11 @@ public class BluetoothConnectionService {
 
     private static final String appName = "MYAPP";
 
+//    private static final UUID MY_UUID_INSECURE =
+//            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
     private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
     private final BluetoothAdapter mBluetoothAdapter;
     Context mContext;
@@ -117,12 +120,11 @@ public class BluetoothConnectionService {
         public ConnectThread(BluetoothDevice device, UUID uuid) {
             Log.d(TAG, "ConnectThread: started.");
             mmDevice = device;
-            deviceUUID = uuid;
+            deviceUUID = MY_UUID_INSECURE;
         }
 
         public void run(){
             BluetoothSocket tmp = null;
-            int counter = 0;
             Log.i(TAG, "RUN mConnectThread ");
 
             // Get a BluetoothSocket for a connection with the
@@ -130,7 +132,7 @@ public class BluetoothConnectionService {
             try {
                 Log.d(TAG, "ConnectThread: Trying to create InsecureRfcommSocket using UUID: "
                         +MY_UUID_INSECURE );
-                tmp = mmDevice.createRfcommSocketToServiceRecord(deviceUUID);
+                tmp = mmDevice.createRfcommSocketToServiceRecord(MY_UUID_INSECURE);
             } catch (IOException e) {
                 Log.e(TAG, "ConnectThread: Could not create InsecureRfcommSocket " + e.getMessage());
             }
@@ -142,31 +144,24 @@ public class BluetoothConnectionService {
 
             // Make a connection to the BluetoothSocket
 
-            do{
-                try {
-                    mmSocket.connect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                counter++;
-            }while (!mmSocket.isConnected() && counter < 100);
 
-//            try {
-//                // This is a blocking call and will only return on a
-//                // successful connection or an exception
-//                    mmSocket.connect();
-//
-//                Log.d(TAG, "run: ConnectThread connected.");
-//            } catch (IOException e) {
-//                // Close the socket
-//                try {
-//                    mmSocket.close();
-//                    Log.d(TAG, "run: Closed Socket.");
-//                } catch (IOException e1) {
-//                    Log.e(TAG, "mConnectThread: run: Unable to close connection in socket " + e1.getMessage());
-//                }
-//                Log.d(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID_INSECURE );
-//            }
+
+            try {
+                // This is a blocking call and will only return on a
+                // successful connection or an exception
+                    mmSocket.connect();
+
+                Log.d(TAG, "run: ConnectThread connected.");
+            } catch (IOException e) {
+                // Close the socket
+                try {
+                    mmSocket.close();
+                    Log.d(TAG, "run: Closed Socket.");
+                } catch (IOException e1) {
+                    Log.e(TAG, "mConnectThread: run: Unable to close connection in socket " + e1.getMessage());
+                }
+                Log.d(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID_INSECURE );
+            }
 
             //will talk about this in the 3rd video
             connected(mmSocket,mmDevice);
