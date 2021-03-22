@@ -85,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
                     showSuccessMessage();
 
+                }else if(message.equals("Invalid Credentials")){
+                    Toast.makeText(MainActivity.this,"Login Failed!" + message  + response,Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(MainActivity.this,"WALA Response : "  + response,Toast.LENGTH_LONG).show();
+
                 }
 
             }

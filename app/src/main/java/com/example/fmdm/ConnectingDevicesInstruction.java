@@ -397,6 +397,7 @@ private static final UUID MY_UUID_INSECURE =
             public void onClick(DialogInterface dialog, int which) {
                 String kobe = "24";
                 byte[] bytes = kobe.getBytes(StandardCharsets.UTF_8);
+                Log.d(TAG, "Im sending:  " + bytes);
                 mBluetoothConnection.write(bytes);
                 Intent intent = new Intent(ConnectingDevicesInstruction.this, InstructionScreen.class);
 //                intent.putExtra("studentID",idnumber);
