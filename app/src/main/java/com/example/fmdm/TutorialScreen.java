@@ -110,8 +110,8 @@ public class TutorialScreen extends AppCompatActivity {
             System.out.println("The OUTPUT: " + text);
 
 
-//            float getFloat = Float.parseFloat(text);
-//            values.add(getFloat);
+            float getFloat = Float.parseFloat(text);
+            values.add(getFloat);
             input.clear();
             if (values.size() == 5) {
                 thumb = values.get(0);
