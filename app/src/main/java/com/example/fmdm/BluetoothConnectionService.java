@@ -272,11 +272,11 @@ public class BluetoothConnectionService {
         }
 
         //Call this from the main activity to send data to the remote device
-        public void write(byte[] bytes) {
-            String text = new String(bytes, Charset.defaultCharset());
-            Log.d(TAG, "write: Writing to outputstream: " + text);
+        public void write(byte bytes) {
+//            String text = new String(bytes, Charset.defaultCharset());
+            Log.d(TAG, "write: Writing to outputstream: " + bytes);
             try {
-                mmOutStream.write(bytes);
+                mmOutStream.write(24);
             } catch (IOException e) {
                 Log.e(TAG, "write: Error writing to output stream. " + e.getMessage() );
             }
@@ -304,7 +304,7 @@ public class BluetoothConnectionService {
 //     * @param out The bytes to write
 //     * @see ConnectedThread#write(byte[])
      */
-    public void write(byte[] out) {
+    public void write(byte out) {
         // Create temporary object
         ConnectedThread r;
 

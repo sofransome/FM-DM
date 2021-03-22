@@ -395,10 +395,11 @@ private static final UUID MY_UUID_INSECURE =
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String kobe = "24";
-                byte[] bytes = kobe.getBytes(StandardCharsets.UTF_8);
-                Log.d(TAG, "Im sending:  " + bytes);
-                mBluetoothConnection.write(bytes);
+//                String kobe = "24";
+                byte b = 24;
+//                byte[] bytes = kobe.getBytes(StandardCharsets.UTF_8);
+                Log.d(TAG, "Im sending:  " + b);
+                mBluetoothConnection.write(b);
                 Intent intent = new Intent(ConnectingDevicesInstruction.this, InstructionScreen.class);
 //                intent.putExtra("studentID",idnumber);
                 startActivity(intent);
