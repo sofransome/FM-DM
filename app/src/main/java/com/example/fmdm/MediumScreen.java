@@ -24,13 +24,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,18 +46,24 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 public class MediumScreen extends AppCompatActivity {
 
-    String URL = "https://thesis-api-usls.herokuapp.com/api/students/login?fbclid=IwAR3vAUWOjRo0YDWsfb2ndYexKjUIVLtB50vMWZnnawIi_u5Uc7s8HXldTa4";
+    String URL = "https://thesis-api-usls.herokuapp.com/medium", resultURL = "https://thesis-api-usls.herokuapp.com/get-result";
     StringBuilder messages;
-    String idnumber;
 
-    char x;
-    String temp = "",currentDate;
+
+    Context context;
+    Image[] mediumImageArray;
+    String[][] mediumArray = new String[30][2];
+
+
+
     ArrayList<Character> input = new ArrayList<Character>();
     ArrayList<Float> values = new ArrayList<Float>();
     float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
@@ -61,28 +72,15 @@ public class MediumScreen extends AppCompatActivity {
     ImageView imageView_Medium;
     TextView textView_Medium,textView_forNum,tv_scoreMedium;
     EditText editText_Medium;
-    String correctAnswer_Medium, username,medium_String;
+    String correctAnswer_Medium, username,medium_String,idnumber,firstName,lastName,temp = "",difficulty = "medium",grading = "1";
     int easy_score2, score_Medium;
     Set<Integer> set = new HashSet<>();
 
-    int[] image_list={
-//            97219, 12345, 21341, 75137, 51832, 69281, 543241, 635189, 781432, 67583,
-            R.drawable.airplane, R.drawable.ambulance,R.drawable.island,
-            R.drawable.banana, R.drawable.cabinet, R.drawable.carabao,
-//            R.drawable.chicken, R.drawable.chocolate, R.drawable.doctor,
-//            R.drawable.elephant, R.drawable.forest, R.drawable.guitar, R.drawable.kitchen,
-//            R.drawable.market, R.drawable.motorcycle, R.drawable.mountain,
-//            R.drawable.orange, R.drawable.pencils, R.drawable.sandwich,
-//            R.drawable.teacher, R.drawable.telephone, R.drawable.television,
-//            R.drawable.violet, R.drawable.window, R.drawable.watermelon,
-//            R.drawable.garden, R.drawable.necklace, R.drawable.aquarium
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medium_screen);
-
 
         imageView_Medium = (ImageView)findViewById(R.id.imageview_Medium);
         textView_Medium = (TextView)findViewById(R.id.textview_Medium);
@@ -91,11 +89,16 @@ public class MediumScreen extends AppCompatActivity {
         editText_Medium = (EditText)findViewById(R.id.edittext_Medium);
 
         idnumber = getIntent().getStringExtra("studentID");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
+
+        idnumber = getIntent().getStringExtra("studentID");
         easy_score2 = getIntent().getIntExtra("easy_score1",0);
 
-        setImage_Medium();
+
         messages = new StringBuilder();
         LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+        mediumRequest();
 
         tv_scoreMedium.setText("Score: " + String.valueOf(score_Medium));
 
@@ -408,97 +411,146 @@ Handler handler = new Handler(new Handler.Callback() {
 
 
     public void setImage_Medium(){
+        context = getApplicationContext();
         Random random = new Random();
 
+
+
+
         while (true){
-            int num = random.nextInt(image_list.length);
+            int num = random.nextInt(6);
             if(set.contains(num) == false){
                 set.add(num);
-                int imageSelected_Medium = image_list[num];
-                if(imageSelected_Medium>999 && imageSelected_Medium<=999999){
-                    correctAnswer_Medium = String.valueOf(image_list[num]);
-                    imageView_Medium.setImageResource(0);
-                    textView_forNum.setText(String.valueOf(correctAnswer_Medium));
-                }else {
-                    textView_forNum.setText("");
-                    imageView_Medium.setImageResource(imageSelected_Medium);
-                    correctAnswer_Medium = getResources().getResourceName(imageSelected_Medium);
-                    correctAnswer_Medium = correctAnswer_Medium.substring(correctAnswer_Medium.lastIndexOf("/") + 1);
-                    textView_Medium.setText(correctAnswer_Medium);
-                }
+                Log.e("Size of Set: ", String.valueOf(set.size()));
+
+                Glide
+                        .with(context)
+                        .load(mediumArray[num][0])
+                        .into(imageView_Medium);
+                correctAnswer_Medium = String.valueOf(mediumArray[num][1]);
+                textView_Medium.setText(correctAnswer_Medium);
                 break;
             }
         }
     }
 
-    public void submitAnswer_Medium(View view){
-        medium_String = editText_Medium.getText().toString();
+    public void mediumRequest(){
+        final ProgressDialog loading = new ProgressDialog(MediumScreen.this);
+        loading.setMessage("Please Wait...");
+        loading.setCanceledOnTouchOutside(false);
+        loading.show();
 
-        if (textView_Medium.getText().toString().equals(medium_String) && !textView_Medium.getText().toString().equals("")){
+        StringRequest stringRequest = new StringRequest(URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson gson = gsonBuilder.create();
+                mediumImageArray = gson.fromJson(response,Image[].class);
+//                userArray = gson.fromJson(response,User[].class);
+                Log.d("RESPONSE::::", response);
+                loading.dismiss();
+
+                for(int r=0; r < mediumImageArray.length; r++){
+                    Image easy = mediumImageArray[r];
+
+
+                    for(int c=0; c < 2; c++){
+
+                        if(c == 0){
+                            mediumArray[r][c] = easy.getUrl().toString();
+                        }else{
+                            mediumArray[r][c] = easy.getName().toString().toLowerCase();
+                        }
+                    }
+                }
+                setImage_Medium();
+
+                for(int i = 0; i < mediumArray.length; i++){
+                    for(int j = 0; j < mediumArray[i].length; j++){
+
+                        Log.d("MY ARRAY : " , String.valueOf(i) + " " + mediumArray[i][j]);
+                    }
+                    System.out.println();
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Log.e("MainActivity.class", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void submitAnswer_Medium(View view){
+        medium_String = editText_Medium.getText().toString().toLowerCase();
+
+        if(textView_Medium.getText().toString().equals(medium_String) && !textView_Medium.getText().toString().equals("")) {
             score_Medium++;
             tv_scoreMedium.setText("Score: " + String.valueOf(score_Medium));
-            if(set.size() <= image_list.length - 2){
-                correct();
-            }
-//            correct();
             editText_Medium.setText("");
-            if(score_Medium==2){
-                hard_unlock();
-            }
-            if(set.size() <= image_list.length - 1){
-                setImage_Medium();
-            }else{
-                if(score_Medium >= 2){
-                    goto_hard();
-                }else{
-                    tryMedium_Again();
-                }
-            }
-        }else if(imageView_Medium.getDrawable() == null && !textView_forNum.getText().toString().equals("")){
-            if(textView_forNum.getText().toString().equals(medium_String)) {
-                score_Medium++;
-                tv_scoreMedium.setText("Score: " + String.valueOf(score_Medium));
-                if(set.size() <= image_list.length - 2){
+            Log.e("MediumScreen.class", String.valueOf(set.size()) + " " + String.valueOf(mediumImageArray.length));
+
+            if (set.size() <= mediumImageArray.length) {
+                if (set.size() < mediumImageArray.length) {
                     correct();
+                    if (score_Medium == 3) {
+                        hard_unlock();
+                    } else if (set.size() == mediumImageArray.length && score_Medium >= 3) {
+                        goto_hard();
+                    } else if (set.size() == mediumImageArray.length && score_Medium < 3) {
+                        tryMedium_Again();
+                    } else {
+                        setImage_Medium();
+                    }
+                } else {
+                    if (score_Medium == 3) {
+                        hard_unlock();
+                    } else if (set.size() == mediumImageArray.length && score_Medium >= 3) {
+                        goto_hard();
+                    } else if (set.size() == mediumImageArray.length && score_Medium < 3) {
+                        tryMedium_Again();
+                    } else {
+                        setImage_Medium();
+                    }
                 }
-//                correct();
-                editText_Medium.setText("");
-                if(score_Medium==2){
-                    hard_unlock();
-                }
-            }else{
-                editText_Medium.setText("");
-                if(set.size() <= image_list.length - 2){
-                    incorrect();
-                }
-//                incorrect();
             }
-            if(set.size() <= image_list.length - 1){
-                setImage_Medium();
-            }else{
-                if(score_Medium >= 2){
-                    goto_hard();
-                }else{
-                    tryMedium_Again();
-                }
-            }
-        }
-        else{
-            if(set.size() <= image_list.length - 2){
-                incorrect();
-            }
-//            incorrect();
+        }else {
             editText_Medium.setText("");
-            if(set.size() <= image_list.length - 1){
-                setImage_Medium();
-            }else{
-                if(score_Medium >= 2){
-                    goto_hard();
-                }else{
-                    tryMedium_Again();
+            if (set.size() <= mediumImageArray.length){
+                if (set.size() < mediumImageArray.length) {
+                    incorrect();
+                    if (score_Medium == 3) {
+                        hard_unlock();
+                    } else if (set.size() == mediumImageArray.length && score_Medium >= 3) {
+                        goto_hard();
+                    } else if (set.size() == mediumImageArray.length && score_Medium < 3) {
+                        tryMedium_Again();
+                    } else {
+                        setImage_Medium();
+                    }
+                } else {
+                    if (score_Medium == 1) {
+                        hard_unlock();
+                    } else if (set.size() == mediumImageArray.length && score_Medium >= 3) {
+                        goto_hard();
+                    } else if (set.size() == mediumImageArray.length && score_Medium < 3) {
+                        tryMedium_Again();
+                    } else {
+                        setImage_Medium();
+                    }
                 }
             }
+
         }
+
 
     }
 
@@ -513,18 +565,19 @@ Handler handler = new Handler(new Handler.Callback() {
                 post_Data();
 
 
-//                Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
+                Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
 //                intent.putExtra("easy_score2",easy_score2);
 //                intent.putExtra("medium_score", score_Medium);
 //                intent.putExtra("studentID",idnumber);
-//                startActivity(intent);
-//                finish();
+                startActivity(intent);
+                finish();
             }
         });
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                setImage_Medium();
             }
         });
         alert.create().show();
@@ -541,12 +594,12 @@ Handler handler = new Handler(new Handler.Callback() {
                 post_Data();
 
 
-//                Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
+                Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
 //                intent.putExtra("easy_score2",easy_score2);
 //                intent.putExtra("medium_score", score_Medium);
 //                intent.putExtra("studentID",idnumber);
-//                startActivity(intent);
-//                finish();
+                startActivity(intent);
+                finish();
             }
         });
         alert.create().show();
@@ -556,7 +609,7 @@ Handler handler = new Handler(new Handler.Callback() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Try Medium Again");
         alert.setMessage("Your score is " + score_Medium + " and you did not reach the amount of score " +
-                "to proceed to the next level" + " "+ set.size() + " "+ image_list.length );
+                "to proceed to the next level");
         alert.setCancelable(false);
         alert.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
             @Override
@@ -589,66 +642,53 @@ Handler handler = new Handler(new Handler.Callback() {
     }
 
     public void post_Data(){
+        RequestQueue requestQueue = Volley.newRequestQueue(MediumScreen.this);
+
         final ProgressDialog loading = new ProgressDialog(MediumScreen.this);
         loading.setMessage("Please Wait...");
         loading.setCanceledOnTouchOutside(false);
         loading.show();
 
-        JSONObject object = new JSONObject();
-        try {
-            object.put("student_id",idnumber);
-            object.put("mediumScore",score_Medium);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        StringRequest stringReq =  new StringRequest(Request.Method.POST, resultURL, new Response.Listener<String>() {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, object, new Response.Listener<JSONObject>() {
+
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
+                Log.d("Response: ", response);
 
-                Toast.makeText(MediumScreen.this,"String Response : "+ response.toString(),Toast.LENGTH_LONG).show();
-                Log.d("Response", String.valueOf(response));
-                try {
-                    Log.d("JSON", String.valueOf(response));
-                    loading.dismiss();
-                    String Error = response.getString("httpStatus");
-                    Log.d("Medium: ", Error);
-//                    Toast.makeText(SendScreen.this, "Bilang" + Error, Toast.LENGTH_SHORT).show();
-                    if (Error.equals("")||Error.equals(null)){
-                        Log.d("Response is not OK", String.valueOf(response));
-                    }else if(Error.equals("OK")){
-                        Log.d("Response is OK", String.valueOf(response));
-                        Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
-                        intent.putExtra("easy_score2",easy_score2);
-                        intent.putExtra("medium_score", score_Medium);
-                        intent.putExtra("studentID",idnumber);
-                        startActivity(intent);
-                        finish();
+//                Toast.makeText(EasyScreen.this,"Response : "  + response,Toast.LENGTH_LONG).show();
 
-
-                    }else {
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    loading.dismiss();
-                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loading.dismiss();
-                VolleyLog.d("MediumScreen", "Error: " + error.getMessage().toString());
-                Toast.makeText(MediumScreen.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("ERROR: ",error.getMessage());
-
+                Toast.makeText(MediumScreen.this,"Error: "  + error.getMessage(),Toast.LENGTH_LONG).show();
 
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(jsonObjectRequest);
+        }){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                loading.dismiss();
+                Log.d("idnumber : " , idnumber);
+                Log.d("firstname: " , firstName);
+                Log.d("lastname : " , lastName);
+                Log.d("difficulty : " , difficulty);
+                Log.d("grading : " , grading);
+                Log.d("score : " , String.valueOf(score_Medium));
+                Map<String, String> params = new HashMap<>();
+                params.put("student_id",idnumber);
+                params.put("difficulty",difficulty);
+                params.put("result",String.valueOf(score_Medium));
+                params.put("grading",grading);
+
+                return params;
+            }
+        };
+        requestQueue.add(stringReq);
+
     }
 
     public void correct(){

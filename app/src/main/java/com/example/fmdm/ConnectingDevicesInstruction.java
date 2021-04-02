@@ -38,7 +38,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
     Button btnEnableDisable_Discoverable;
 
     BluetoothConnectionService mBluetoothConnection;
-    String idnumber;
+    String idnumber,firstName,lastName;
 
     Button btnStartConnection;
     Button btnSend;
@@ -48,10 +48,10 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
 
     public static StringBuilder messages;
 
-//    private static final UUID MY_UUID_INSECURE =
-//            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-private static final UUID MY_UUID_INSECURE =
-        UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+    private static final UUID MY_UUID_INSECURE =
+            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+//private static final UUID MY_UUID_INSECURE =
+//        UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
     BluetoothDevice mBTDevice;
 
@@ -203,6 +203,8 @@ private static final UUID MY_UUID_INSECURE =
 
         btnStartConnection = (Button) findViewById(R.id.btnStartConnection);
         idnumber = getIntent().getStringExtra("studentID");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
 //        btnSend = (Button) findViewById(R.id.btnSend);
 //        btnNext = (Button)findViewById(R.id.btnNext);
 //        etSend = (EditText) findViewById(R.id.editText);
@@ -401,13 +403,24 @@ private static final UUID MY_UUID_INSECURE =
                 Log.d(TAG, "Im sending:  " + b);
                 mBluetoothConnection.write(b);
                 Intent intent = new Intent(ConnectingDevicesInstruction.this, InstructionScreen.class);
-//                intent.putExtra("studentID",idnumber);
+                intent.putExtra("studentID",idnumber);
+                intent.putExtra("firstName",firstName);
+                intent.putExtra("lastName",lastName);
                 startActivity(intent);
                 finish();
 //                onDestroy();
             }
         });
         alert.create().show();
+
+    }
+    public void next(View view){
+        Intent intent = new Intent(ConnectingDevicesInstruction.this,EasyScreen.class);
+        intent.putExtra("studentID",idnumber);
+        intent.putExtra("firstName",firstName);
+        intent.putExtra("lastName",lastName);
+        startActivity(intent);
+        finish();
 
     }
 }

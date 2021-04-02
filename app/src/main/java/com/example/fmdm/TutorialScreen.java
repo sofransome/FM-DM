@@ -31,7 +31,7 @@ public class TutorialScreen extends AppCompatActivity {
 
     static final UUID mUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     char x;
-    String temp = "",idnumber;
+    ;
     ArrayList<Character> input = new ArrayList<Character>();
     ArrayList<Float> values = new ArrayList<Float>();
     float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
@@ -39,9 +39,10 @@ public class TutorialScreen extends AppCompatActivity {
     StringBuilder messages;
 
 
+
     public ImageView imgViewQuestion;
     EditText et_answerfield;
-    String correct_answer,tutorial_String;
+    String correct_answer,tutorial_String,idnumber,firstName,lastName,temp = "";
     TextView textView;
     int i=34,score=0;
     Button tutorialBtn;
@@ -67,10 +68,15 @@ public class TutorialScreen extends AppCompatActivity {
         setContentView(R.layout.activity_tutorial_screen);
 
 
+
         imgViewQuestion = (ImageView)findViewById(R.id.imageview_Tutorial) ;
         et_answerfield = (EditText)findViewById(R.id.editText_tutorial);
         textView = (TextView)findViewById(R.id.tutorial_textview);
+
         idnumber = getIntent().getStringExtra("studentID");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
+
 //        tutorialBtn = (Button)findViewById(R.id.tutorial_submit);
 //        tutorialBtn.setEnabled(true);
         setImage();
@@ -450,11 +456,12 @@ public class TutorialScreen extends AppCompatActivity {
     public void skip(View view){
         setImage();
         if( i < 0 && i >34 ){
-//            Intent intent = new Intent(TutorialScreen.this,LevelsScreen.class);
-//            intent.putExtra("userID",userID);
-//            intent.putExtra("username",username);
-//            startActivity(intent);
-//            finish();
+            Intent intent = new Intent(TutorialScreen.this,LevelsScreen.class);
+            intent.putExtra("studentID",idnumber);
+            intent.putExtra("firstName",firstName);
+            intent.putExtra("lastName",lastName);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -475,11 +482,12 @@ public class TutorialScreen extends AppCompatActivity {
     }
 
     public void goto_Levels(View view){
-//        Intent intent = new Intent(this, LevelsScreen.class);
-//        intent.putExtra("userID",userID);
-//        intent.putExtra("username",username);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, LevelsScreen.class);
+        intent.putExtra("studentID",idnumber);
+        intent.putExtra("firstName",firstName);
+        intent.putExtra("lastName",lastName);
+        startActivity(intent);
+        finish();
 
     }
 

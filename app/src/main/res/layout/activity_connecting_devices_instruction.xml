@@ -39,6 +39,14 @@
         android:layout_alignParentRight="true"
         android:layout_gravity="center"
         android:background="#00E1FF" />
+
+    <Button
+        android:onClick="next"
+        android:text="NEXT"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

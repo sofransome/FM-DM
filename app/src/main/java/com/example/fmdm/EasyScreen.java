@@ -23,13 +23,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,17 +45,23 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 public class EasyScreen extends AppCompatActivity {
 
-    String URL = "https://thesis-api-usls.herokuapp.com/api/students/login?fbclid=IwAR3vAUWOjRo0YDWsfb2ndYexKjUIVLtB50vMWZnnawIi_u5Uc7s8HXldTa4";
+    String URL = "https://thesis-api-usls.herokuapp.com/easy", resultURL = "https://thesis-api-usls.herokuapp.com/get-result";
     StringBuilder messages;
 
-    char x;
-    String temp = "", username, currentDate;
+    Context context;
+    Image[] easyImageArray;
+    String[][] easyArray = new String[50][2];
+
+
+
     ArrayList<Character> input = new ArrayList<Character>();
     ArrayList<Float> values = new ArrayList<Float>();
     float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
@@ -59,24 +70,13 @@ public class EasyScreen extends AppCompatActivity {
     ImageView imageView_Easy;
     TextView textView_Easy,textView_forNum,tv_scoreEasy;
     EditText editText_Easy;
-    String correctAnswer_Easy,easy_String,idnumber;
+    String correctAnswer_Easy,easy_String,idnumber,firstName,lastName,temp = "",difficulty = "easy",grading = "1";
     int score_Easy;
     Set<Integer> set = new HashSet<>();
 
 
 
-    int[] image_list={
-            125, 123, 286, 535, 128, 226, 159, 981, 864, 975, 264, 439, 542, 843, 452, 364, 921, 12, 81, 54,
-            R.drawable.bike, R.drawable.bag, R.drawable.bird, R.drawable.beach,
-            R.drawable.blue, R.drawable.bowl, R.drawable.cap, R.drawable.car,
-//            R.drawable.cat, R.drawable.chair, R.drawable.corn,
-//            R.drawable.eye, R.drawable.fish, R.drawable.fork,
-//            R.drawable.hand, R.drawable.mouse, R.drawable.rice,
-//            R.drawable.road, R.drawable.rock, R.drawable.ship, R.drawable.shirt,
-//            R.drawable.sky, R.drawable.store, R.drawable.chick, R.drawable.lemon,
-//            R.drawable.milk, R.drawable.baby, R.drawable.shoes, R.drawable.nails, R.drawable.fence
 
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,10 @@ public class EasyScreen extends AppCompatActivity {
         setContentView(R.layout.activity_easy_screen);
 
         idnumber = getIntent().getStringExtra("studentID");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
+
+
 
         imageView_Easy = (ImageView)findViewById(R.id.imageview_Easy);
         textView_Easy = (TextView)findViewById(R.id.textview_Easy);
@@ -92,9 +96,9 @@ public class EasyScreen extends AppCompatActivity {
         editText_Easy = (EditText)findViewById(R.id.edittext_Easy);
 
 
-        setImage_Easy();
         messages = new StringBuilder();
         LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+        easyRequest();
 
         tv_scoreEasy.setText("Score: " + String.valueOf(score_Easy));
 
@@ -407,102 +411,147 @@ public class EasyScreen extends AppCompatActivity {
 
 
     public void setImage_Easy(){
+        context = getApplicationContext();
         Random random = new Random();
 
+
+
+
         while (true){
-            int num = random.nextInt(image_list.length);
+            int num = random.nextInt(50);
             if(set.contains(num) == false){
                 set.add(num);
-                int imageSelected_Easy = image_list[num];
-                if(imageSelected_Easy<=999){
-                    correctAnswer_Easy = String.valueOf(image_list[num]);
-                    imageView_Easy.setImageResource(0);
-                    textView_forNum.setText(String.valueOf(correctAnswer_Easy));
-                }else {
-                    textView_forNum.setText("");
-                    imageView_Easy.setImageResource(imageSelected_Easy);
-                    correctAnswer_Easy = getResources().getResourceName(imageSelected_Easy);
-                    correctAnswer_Easy = correctAnswer_Easy.substring(correctAnswer_Easy.lastIndexOf("/") + 1);
-                    textView_Easy.setText(correctAnswer_Easy);
-                }
+                Log.e("Size of Set: ", String.valueOf(set.size()));
+
+                Glide
+                        .with(context)
+                        .load(easyArray[num][0])
+                        .into(imageView_Easy);
+                correctAnswer_Easy = String.valueOf(easyArray[num][1]);
+                textView_Easy.setText(correctAnswer_Easy);
                 break;
             }
         }
+    }
 
+    public void easyRequest(){
+        final ProgressDialog loading = new ProgressDialog(EasyScreen.this);
+        loading.setMessage("Please Wait...");
+        loading.setCanceledOnTouchOutside(false);
+        loading.show();
+
+        StringRequest stringRequest = new StringRequest(URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson gson = gsonBuilder.create();
+                easyImageArray = gson.fromJson(response,Image[].class);
+
+                Log.d("RESPONSE::::", response);
+                loading.dismiss();
+
+                for(int r=0; r < easyImageArray.length; r++){
+                    Image easy = easyImageArray[r];
+
+
+                    for(int c=0; c < 2; c++){
+
+                        if(c == 0){
+                            easyArray[r][c] = easy.getUrl().toString();
+                        }else{
+                            easyArray[r][c] = easy.getName().toString().toLowerCase();
+                        }
+                    }
+                }
+                setImage_Easy();
+
+                for(int i = 0; i < easyArray.length; i++){
+                    for(int j = 0; j < easyArray[i].length; j++){
+
+                        Log.d("MY ARRAY : " , String.valueOf(i) + " " + easyArray[i][j]);
+                    }
+                    System.out.println();
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Log.e("EasyScreen.class", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     public void submitAnswer_Easy(View view){
-        easy_String = editText_Easy.getText().toString();
+        easy_String = editText_Easy.getText().toString().toLowerCase();
 
-
-        if(textView_Easy.getText().toString().equals(easy_String) && !textView_Easy.getText().toString().equals("")){
-            if(set.size() <= image_list.length - 2){
-                correct();
-            }
-//            correct();
+        if(textView_Easy.getText().toString().equals(easy_String) && !textView_Easy.getText().toString().equals("")) {
             score_Easy++;
             tv_scoreEasy.setText("Score: " + String.valueOf(score_Easy));
-
             editText_Easy.setText("");
-            if(score_Easy== 3){
-                medium_unlock();
-            }
-            if(set.size() <= image_list.length - 1){
-                setImage_Easy();
-            }else{
-                if(score_Easy >= 3){
-                    goto_medium();
-                }else{
-                    tryEasy_Again();
-                }
-            }
-        }else if(imageView_Easy.getDrawable() == null && !textView_forNum.getText().toString().equals("")){
-            if(textView_forNum.getText().toString().equals(easy_String)) {
-                if(set.size() <= image_list.length - 2){
+            Log.e("MainActivity.class", String.valueOf(set.size()) + " " + String.valueOf(easyImageArray.length));
+
+            if (set.size() <= easyImageArray.length) {
+                if(set.size() < easyImageArray.length){
                     correct();
-                }
-//                correct();
-                score_Easy++;
-                tv_scoreEasy.setText("Score: " + String.valueOf(score_Easy));
-                editText_Easy.setText("");
-                if(score_Easy== 3){
-
-                    medium_unlock();
-                }
-            }else{
-                editText_Easy.setText("");
-                if(set.size() <= image_list.length - 2){
-                    incorrect();
-                }
-//                incorrect();
-            }
-
-            if(set.size() <= image_list.length - 1){
-                setImage_Easy();
-            }else{
-                if(score_Easy >= 3){
-                    goto_medium();
+                    if (score_Easy == 3) {
+                        medium_unlock();
+                    } else if (set.size() == easyImageArray.length && score_Easy >= 3) {
+                        goto_medium();
+                    } else if(set.size() == easyImageArray.length && score_Easy < 3) {
+                        tryEasy_Again();
+                    }else{
+                        setImage_Easy();
+                    }
                 }else{
-                    tryEasy_Again();
+                    if (score_Easy == 3) {
+                        medium_unlock();
+                    } else if (set.size() == easyImageArray.length && score_Easy >= 3) {
+                        goto_medium();
+                    } else if(set.size() == easyImageArray.length && score_Easy < 3) {
+                        tryEasy_Again();
+                    }else{
+                        setImage_Easy();
+                    }
                 }
             }
-        }
-        else{
-            if(set.size() <= image_list.length - 2){
-                incorrect();
-            }
+        }else {
+            Log.e("MainActivity.class", String.valueOf(set.size()) + " " + String.valueOf(easyImageArray.length));
             editText_Easy.setText("");
-            if(set.size() <= image_list.length - 1){
-                setImage_Easy();
-
-            }else{
-                if(score_Easy >= 5){
-                    goto_medium();
+            if (set.size() <= easyImageArray.length){
+                if(set.size() < easyImageArray.length){
+                    incorrect();
+                    if (score_Easy == 3) {
+                        medium_unlock();
+                    } else if (set.size() == easyImageArray.length && score_Easy >= 3) {
+                        goto_medium();
+                    } else if(set.size() == easyImageArray.length && score_Easy < 3) {
+                        tryEasy_Again();
+                    }else{
+                        setImage_Easy();
+                    }
                 }else{
-                    tryEasy_Again();
+                    if (score_Easy == 3) {
+                        medium_unlock();
+                    } else if (set.size() == easyImageArray.length && score_Easy >= 3) {
+                        goto_medium();
+                    } else if(set.size() == easyImageArray.length && score_Easy < 3) {
+                        tryEasy_Again();
+                    }else{
+                        setImage_Easy();
+                    }
                 }
             }
+
         }
+
 
     }
 
@@ -515,17 +564,18 @@ public class EasyScreen extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 post_Data();
 
-//                Intent intent = new Intent(EasyScreen.this,LevelsScreen.class);
-//                intent.putExtra("easy_score",score_Easy);
-//                intent.putExtra("studentID",idnumber);
-//                startActivity(intent);
-//                finish();
+                Intent intent = new Intent(EasyScreen.this,LevelsScreen.class);
+                intent.putExtra("easy_score",score_Easy);
+                intent.putExtra("studentID",idnumber);
+                startActivity(intent);
+                finish();
             }
         });
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                setImage_Easy();
             }
         });
         alert.create().show();
@@ -542,11 +592,11 @@ public class EasyScreen extends AppCompatActivity {
                 post_Data();
 
 
-//                Intent intent = new Intent(EasyScreen.this,LevelsScreen.class);
-//                intent.putExtra("easy_score",score_Easy);
-//                intent.putExtra("studentID",idnumber);
-//                startActivity(intent);
-//                finish();
+                Intent intent = new Intent(EasyScreen.this,LevelsScreen.class);
+                intent.putExtra("easy_score",score_Easy);
+                intent.putExtra("studentID",idnumber);
+                startActivity(intent);
+                finish();
             }
         });
         alert.create().show();
@@ -588,76 +638,53 @@ public class EasyScreen extends AppCompatActivity {
     }
 
     public void post_Data(){
+        RequestQueue requestQueue = Volley.newRequestQueue(EasyScreen.this);
+
         final ProgressDialog loading = new ProgressDialog(EasyScreen.this);
         loading.setMessage("Please Wait...");
         loading.setCanceledOnTouchOutside(false);
         loading.show();
 
-        JSONObject object = new JSONObject();
-        try {
-            object.put("student_id",idnumber);
-            object.put("easyScore",score_Easy);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        StringRequest stringReq =  new StringRequest(Request.Method.POST, resultURL, new Response.Listener<String>() {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, object, new Response.Listener<JSONObject>() {
+
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
+                Log.d("Response: ", response);
 
-                Toast.makeText(EasyScreen.this,"String Response : "+ response.toString(),Toast.LENGTH_LONG).show();
-                Log.d("Response", String.valueOf(response));
-                try {
-                    Log.d("JSON", String.valueOf(response));
-                    loading.dismiss();
-                    String Error = response.getString("httpStatus");
-                    Log.d("Easy: ", Error);
-//                    Toast.makeText(SendScreen.this, "Bilang" + Error, Toast.LENGTH_SHORT).show();
-                    if (Error.equals("")||Error.equals(null)){
-                        Log.d("Response is not OK", String.valueOf(response));
-                    }else if(Error.equals("OK")){
-                        Log.d("Response is OK", String.valueOf(response));
-                        Intent intent = new Intent(EasyScreen.this,LevelsScreen.class);
-                        intent.putExtra("easy_score",score_Easy);
-                        intent.putExtra("studentID",idnumber);
-                        startActivity(intent);
-                        finish();
+//                Toast.makeText(EasyScreen.this,"Response : "  + response,Toast.LENGTH_LONG).show();
 
-
-                    }else {
-
-                    }
-//                    if (Error.equals("")||Error.equals(null)){
-//                        Log.d("Response is not OK", String.valueOf(response));
-//                    }else if(Error.equals("httpStatus")){
-//                        Log.d("Response is not OK", String.valueOf(response));
-//
-//
-//
-//                    }else {
-//
-//                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    loading.dismiss();
-                }
-//                        resultTextView.setText("String Response : "+ response.toString());
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loading.dismiss();
-                VolleyLog.d("EasySCreen", "Error: " + error.getMessage().toString());
-                Toast.makeText(EasyScreen.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("ERROR: ",error.getMessage());
-
+                Toast.makeText(EasyScreen.this,"Error: "  + error.getMessage(),Toast.LENGTH_LONG).show();
 
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(jsonObjectRequest);
+        }){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                loading.dismiss();
+                Log.d("idnumber : " , idnumber);
+                Log.d("firstname: " , firstName);
+                Log.d("lastname : " , lastName);
+                Log.d("difficulty : " , difficulty);
+                Log.d("grading : " , grading);
+                Log.d("score : " , String.valueOf(score_Easy));
+                Map<String, String> params = new HashMap<>();
+                params.put("student_id",idnumber);
+                params.put("difficulty",difficulty);
+                params.put("result",String.valueOf(score_Easy));
+                params.put("grading",grading);
+
+                return params;
+            }
+        };
+        requestQueue.add(stringReq);
+
     }
 
     public void correct(){

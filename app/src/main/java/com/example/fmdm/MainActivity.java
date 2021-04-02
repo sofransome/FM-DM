@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     String URL = "https://thesis-api-usls.herokuapp.com/authentication-api";
 
+
     EditText studentidnumber_et,studentpassword_et;
-    String idnumber,password;
+    String idnumber,password,message,firstName,lastName;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +66,17 @@ public class MainActivity extends AppCompatActivity {
 
         StringRequest stringReq =  new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
-            String message;
+
             @Override
             public void onResponse(String response) {
+                Log.d("Response: ", response);
                 try {
                     JSONObject jObject = new JSONObject(response);
+                    JSONObject user = jObject.getJSONObject("user");
                     message = jObject.getString("message");
+                    idnumber = (String)user.getString("id");
+                    firstName = (String)user.getString("first_name");
+                    lastName = (String)user.getString("last_name");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -78,16 +84,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                Log.d("Response: ", response);
+
 
                 //                Toast.makeText(MainActivity.this,"Response : "  + response,Toast.LENGTH_LONG).show();
                 if(message.equals("Success") ){
-
+                    loading.dismiss();
                     showSuccessMessage();
 
                 }else if(message.equals("Invalid Credentials")){
+                    loading.dismiss();
                     Toast.makeText(MainActivity.this,"Login Failed!" + message  + response,Toast.LENGTH_LONG).show();
                 }else{
+                    loading.dismiss();
 
                 }
 
@@ -115,12 +123,15 @@ public class MainActivity extends AppCompatActivity {
     public void showSuccessMessage(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Sign in");
-        alert.setMessage("Successfully Signin!");
+        alert.setMessage(firstName + " " + lastName +  "Successfully Signin!");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(MainActivity.this, ConnectingDevicesInstruction.class);
                 intent.putExtra("studentID",idnumber);
+                intent.putExtra("firstName",firstName);
+                intent.putExtra("lastName",lastName);
+
                 startActivity(intent);
                 finish();
             }

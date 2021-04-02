@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LevelsScreen extends AppCompatActivity {
 
     int easy_score1, easy_score3,medium_score1;
-    String idnumber;
+    String idnumber,firstName,lastName;
 
 
     @Override
@@ -21,6 +21,8 @@ public class LevelsScreen extends AppCompatActivity {
 
 
         idnumber = getIntent().getStringExtra("studentID");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
 
         easy_score1 = getIntent().getIntExtra("easy_score", 0);
         easy_score3 = getIntent().getIntExtra("easy_score2", 0);

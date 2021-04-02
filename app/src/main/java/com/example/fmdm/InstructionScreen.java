@@ -12,14 +12,16 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class InstructionScreen extends AppCompatActivity {
 
-    String idnumber;
+    String idnumber,firstName,lastName;
     StringBuilder messages;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruction_screen);
 
-//        idnumber = getIntent().getStringExtra("studentID");
+        idnumber = getIntent().getStringExtra("studentID");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
 
         messages = new StringBuilder();
         LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
@@ -38,7 +40,9 @@ public class InstructionScreen extends AppCompatActivity {
 
     public void goto_Tutorial(View view){
         Intent intent = new Intent(InstructionScreen.this, TutorialScreen.class);
-//        intent.putExtra("studentID",idnumber);
+        intent.putExtra("studentID",idnumber);
+        intent.putExtra("firstName",firstName);
+        intent.putExtra("lastName",lastName);
         startActivity(intent);
         finish();
 
