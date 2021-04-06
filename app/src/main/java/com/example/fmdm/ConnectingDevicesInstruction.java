@@ -415,7 +415,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
 
     }
     public void next(View view){
-        Intent intent = new Intent(ConnectingDevicesInstruction.this,EasyScreen.class);
+        Intent intent = new Intent(ConnectingDevicesInstruction.this,TutorialScreen.class);
         intent.putExtra("studentID",idnumber);
         intent.putExtra("firstName",firstName);
         intent.putExtra("lastName",lastName);

@@ -89,8 +89,8 @@ public class MediumScreen extends AppCompatActivity {
         editText_Medium = (EditText)findViewById(R.id.edittext_Medium);
 
         idnumber = getIntent().getStringExtra("studentID");
-        firstName = getIntent().getStringExtra("firstName");
-        lastName = getIntent().getStringExtra("lastName");
+//        firstName = getIntent().getStringExtra("firstName");
+//        lastName = getIntent().getStringExtra("lastName");
 
         idnumber = getIntent().getStringExtra("studentID");
         easy_score2 = getIntent().getIntExtra("easy_score1",0);
@@ -563,12 +563,13 @@ Handler handler = new Handler(new Handler.Callback() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 post_Data();
+                dialog.cancel();
 
 
                 Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
-//                intent.putExtra("easy_score2",easy_score2);
-//                intent.putExtra("medium_score", score_Medium);
-//                intent.putExtra("studentID",idnumber);
+                intent.putExtra("easy_score2",easy_score2);
+                intent.putExtra("medium_score", score_Medium);
+                intent.putExtra("studentID",idnumber);
                 startActivity(intent);
                 finish();
             }
@@ -595,9 +596,9 @@ Handler handler = new Handler(new Handler.Callback() {
 
 
                 Intent intent = new Intent(MediumScreen.this,LevelsScreen.class);
-//                intent.putExtra("easy_score2",easy_score2);
-//                intent.putExtra("medium_score", score_Medium);
-//                intent.putExtra("studentID",idnumber);
+                intent.putExtra("easy_score2",easy_score2);
+                intent.putExtra("medium_score", score_Medium);
+                intent.putExtra("studentID",idnumber);
                 startActivity(intent);
                 finish();
             }
@@ -673,8 +674,8 @@ Handler handler = new Handler(new Handler.Callback() {
             protected Map<String, String> getParams() throws AuthFailureError {
                 loading.dismiss();
                 Log.d("idnumber : " , idnumber);
-                Log.d("firstname: " , firstName);
-                Log.d("lastname : " , lastName);
+//                Log.d("firstname: " , firstName);
+//                Log.d("lastname : " , lastName);
                 Log.d("difficulty : " , difficulty);
                 Log.d("grading : " , grading);
                 Log.d("score : " , String.valueOf(score_Medium));

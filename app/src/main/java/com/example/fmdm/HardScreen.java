@@ -100,9 +100,10 @@ public class HardScreen extends AppCompatActivity {
         start();
         messages = new StringBuilder();
         LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+        hardRequest();
 
         updateCountDownText();
-        generate_Questions();
+
 
 }
 
@@ -421,7 +422,7 @@ public class HardScreen extends AppCompatActivity {
         Random random = new Random();
 
         while (true){
-            int num = random.nextInt(6);
+            int num = random.nextInt(1);
             if(set.contains(num) == false){
                 set.add(num);
                 Log.e("Size of Set: ", String.valueOf(set.size()));
@@ -432,222 +433,6 @@ public class HardScreen extends AppCompatActivity {
                 break;
             }
         }
-
-//        while (true){
-//            int num = random.nextInt(51);
-//            if (set.contains(num) == false){
-//                set.add(num);
-//                switch (num){
-//                    case 0:
-//                        tv_question.setText("The organ inside your head that controls how you think, feel, and move.");
-//                        correctAnswer_Hard = "brain";
-//                        break;
-//                    case 1:
-//                        tv_question.setText("Protective coverings on the ends of the fingers.");
-//                        correctAnswer_Hard = "nails";
-//                        break;
-//                    case 2:
-//                        tv_question.setText("A muscular organ that pumps blood throughtout the body.");
-//                        correctAnswer_Hard = "heart";
-//                        break;
-//                    case 3:
-//                        tv_question.setText("The top part of the front of the body, between the neck and stomach.");
-//                        correctAnswer_Hard = "chest";
-//                        break;
-//                    case 4:
-//                        tv_question.setText("The upper-most part of human body.");
-//                        correctAnswer_Hard = "head";
-//
-//                    case 5:
-//                        tv_question.setText("Our solar System's star that is made of hydrogen and helium gases, and supplies the heat and light to our planet.");
-//                        correctAnswer_Hard = "sun";
-//                        break;
-//                    case 6:
-//                        tv_question.setText("The largest planet in the Solar System.");
-//                        correctAnswer_Hard = "jupiter";
-//                        break;
-//                    case 7:
-//                        tv_question.setText("The planet where we live.");
-//                        correctAnswer_Hard = "earth";
-//                        break;
-//                    case 8:
-//                        tv_question.setText("The planet that is closest to the Sun.");
-//                        correctAnswer_Hard = "mercury";
-//                        break;
-//                    case 9:
-//                        tv_question.setText("A mineral composed primarily of sodium chloride.");
-//                        correctAnswer_Hard = "salt";
-//                        break;
-//                    case 10:
-//                        tv_question.setText("A piece of absorbent fabric or paper used for drying or wiping a body or a surface.");
-//                        correctAnswer_Hard = "towel";
-//                        break;
-//                    case 11:
-//                        tv_question.setText("An animal doctor is called a.");
-//                        correctAnswer_Hard = "veterinarian";
-//                        break;
-//                    case 12:
-//                        tv_question.setText("A sweet food made from a mixture of flour, shortening, eggs, sugar, and other ingredients, baked and often decorated.");
-//                        correctAnswer_Hard = "cake";
-//                        break;
-//                    case 13:
-//                        tv_question.setText("A man's best friend.");
-//                        correctAnswer_Hard = "dog";
-//                        break;
-//                    case 14:
-//                        tv_question.setText("The one who deliver classroom instruction that helps students learn.");
-//                        correctAnswer_Hard = "teacher";
-//                        break;
-//                    case 15:
-//                        tv_question.setText("Their job is to find what's making you ill and then, treat you so that you can get better.");
-//                        correctAnswer_Hard = "doctor";
-//                        break;
-//                    case 16:
-//                        tv_question.setText("Use in writing or drawing, consisting of a thin graphite enclosed in a long thin piece of wood.");
-//                        correctAnswer_Hard = "pencil";
-//                        break;
-//                    case 17:
-//                        tv_question.setText("Use to remove pencil markings.");
-//                        correctAnswer_Hard = "eraser";
-//                        break;
-//                    case 18:
-//                        tv_question.setText("A place where a person lives.");
-//                        correctAnswer_Hard = "home";
-//                        break;
-//                    case 19:
-//                        tv_question.setText("A place where sick or injured people are given care or treatment.");
-//                        correctAnswer_Hard = "hospital";
-//                        break;
-//                    case 20:
-//                        tv_question.setText("A seat for one person that has a back and usually four legs.");
-//                        correctAnswer_Hard = "chair";
-//                        break;
-//                    case 21:
-//                        tv_question.setText("An area covered with sand or small rocks that is next to an ocean.");
-//                        correctAnswer_Hard = "beach";
-//                        break;
-//                    case 22:
-//                        tv_question.setText("A bird that is raised by people for its eggs and meat.");
-//                        correctAnswer_Hard = "chicken";
-//                        break;
-//                    case 23:
-//                        tv_question.setText("The planet that is sixth in order from the sun and that is surrounded by large rings.");
-//                        correctAnswer_Hard = "saturn";
-//                        break;
-//                    case 24:
-//                        tv_question.setText("The body part at the end of your arm that includes your fingers.");
-//                        correctAnswer_Hard = "hand";
-//                        break;
-//                    case 25:
-//                        tv_question.setText("A thin threadlike growth from the skin of a person or animal.");
-//                        correctAnswer_Hard = "hair";
-//                        break;
-//                    case 26:
-//                        tv_question.setText("The part of the face or head through which a person or animal smells and breathes.");
-//                        correctAnswer_Hard = "nose";
-//                        break;
-//                    case 27:
-//                        tv_question.setText("A part of the house or a room in which food is cooked.");
-//                        correctAnswer_Hard = "kitchen";
-//                        break;
-//                    case 28:
-//                        tv_question.setText("A muscular organ in the mouth of most vertebrates that manipulates food for mastication and is used in the act of swallowing.");
-//                        correctAnswer_Hard = "tongue";
-//                        break;
-//                    case 29:
-//                        tv_question.setText("A large natural flow of water that crosses an area of land and goes into an ocean or lake.");
-//                        correctAnswer_Hard = "river";
-//                        break;
-//                    case 30:
-//                        tv_question.setText("a cold-blooded animal that lives in water, breathes with gills,and usually has fins and scales.");
-//                        correctAnswer_Hard = "fish";
-//                        break;
-//                    case 31:
-//                        tv_question.setText("The clear liquid that has no color,taste, or smell, and that is used for drinking.");
-//                        correctAnswer_Hard = "water";
-//                        break;
-//                    case 32:
-//                        tv_question.setText("A chemical that is found in the air,that has no color,taste, or smell, and that is necessary for life.");
-//                        correctAnswer_Hard = "oxygen";
-//                        break;
-//                    case 33:
-//                        tv_question.setText("The opening through which food passes into the body.");
-//                        correctAnswer_Hard = "mouth";
-//                        break;
-//                    case 34:
-//                        tv_question.setText("A piece of clothing for the upper body that has sleeves and usually a collar and buttons down the front.");
-//                        correctAnswer_Hard = "shirt";
-//                        break;
-//                    case 35:
-//                        tv_question.setText("The upper interior surface of a room or other similar compartment.");
-//                        correctAnswer_Hard = "ceiling";
-//                        break;
-//                    case 36:
-//                        tv_question.setText("A shaped covering for the head worn for warmth, as a fashion item, or as part of a uniform.");
-//                        correctAnswer_Hard = "hat";
-//                        break;
-//                    case 37:
-//                        tv_question.setText("An area of land that rises very high above the land around it and that is higher than a hill.");
-//                        correctAnswer_Hard = "mountain";
-//                        break;
-//                    case 38:
-//                        tv_question.setText("A hard flat surface for vehicles, people, and animals to travel on.");
-//                        correctAnswer_Hard = "road";
-//                        break;
-//                    case 39:
-//                        tv_question.setText("Usually used for washing, bathing, and other types of housekeeping.");
-//                        correctAnswer_Hard = "soap";
-//                        break;
-//                    case 40:
-//                        tv_question.setText("A chart that shows the days, weeks, and months of a year.");
-//                        correctAnswer_Hard = "calendar";
-//                        break;
-//                    case 41:
-//                        tv_question.setText("A flat dish, typically circular, from which food is eaten or served.");
-//                        correctAnswer_Hard = "plate";
-//                        break;
-//                    case 42:
-//                        tv_question.setText("A set of steps leading from one floor of a building to another, typically inside the building.");
-//                        correctAnswer_Hard = "stairs";
-//                        break;
-//                    case 43:
-//                        tv_question.setText("A place where products are bought and sold.");
-//                        correctAnswer_Hard = "market";
-//                        break;
-//                    case 44:
-//                        tv_question.setText("A thick growth of trees and bushes that covers a large area.");
-//                        correctAnswer_Hard = "forest";
-//                        break;
-//                    case 45:
-//                        tv_question.setText("The flashes of light that are produced in the sky during a storm.");
-//                        correctAnswer_Hard = "lightning";
-//                        break;
-//                    case 46:
-//                        tv_question.setText("A long curved fruit with a thick peel that is yellow when it is ripe.");
-//                        correctAnswer_Hard = "banana";
-//                        break;
-//                    case 47:
-//                        tv_question.setText("A bake food made from a mixture of water and flour.");
-//                        correctAnswer_Hard = "bread";
-//                        break;
-//                    case 48:
-//                        tv_question.setText("A nutrient-rich liquid food produced by the mammary glands of mammals..");
-//                        correctAnswer_Hard = "milk";
-//                        break;
-//                    case 49:
-//                        tv_question.setText("Something used as a way to pay for goods and services and to pay peaople for their work.");
-//                        correctAnswer_Hard = "money";
-//                        break;
-//                    case 50:
-//                        tv_question.setText("Things that are no longer useful or wanted and that have been thrown out.");
-//                        correctAnswer_Hard = "garbage";
-//                        break;
-//                }
-//                break;
-//            }
-//        }
-
-
     }
 
     public void hardRequest(){
@@ -673,7 +458,7 @@ public class HardScreen extends AppCompatActivity {
                     for(int c=0; c < 2; c++){
 
                         if(c == 0){
-                            hardArray[r][c] = question.getQuestion().toString();
+                            hardArray[r][c] = question.getName().toString();
                         }else{
                             hardArray[r][c] = question.getAnswer().toString().toLowerCase();
                         }
@@ -743,6 +528,7 @@ public class HardScreen extends AppCompatActivity {
         }.start();
         TimerRunning = true;
         updateCountDownText();
+
 
     }
     public void updateCountDownText(){
@@ -854,6 +640,7 @@ public class HardScreen extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 startTimer();
 
+
             }
         });
         alert.create().show();
@@ -869,6 +656,13 @@ public class HardScreen extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 post_Data();
+                Intent intent = new Intent(HardScreen.this, UserScore.class);
+                intent.putExtra("score_Easy",score_Easy);
+                intent.putExtra("score_Medium",score_Medium);
+                intent.putExtra("score_Hard",score_Hard);
+                intent.putExtra("userID",idnumber);
+                startActivity(intent);
+                finish();
 
             }
         });

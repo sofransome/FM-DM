@@ -6,14 +6,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Question {
+public class Image {
 
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("answer")
+    @SerializedName("url")
     @Expose
-    private String answer;
+    private String url;
 
     public String getName() {
         return name;
@@ -23,12 +23,12 @@ public class Question {
         this.name = name;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getUrl() {
+        return url;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 }

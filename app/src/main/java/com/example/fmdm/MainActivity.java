@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     EditText studentidnumber_et,studentpassword_et;
-    String idnumber,password,message,firstName,lastName;;
+    String idnumber,password,message,firstName,lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,21 +82,15 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
-
-
-
-                //                Toast.makeText(MainActivity.this,"Response : "  + response,Toast.LENGTH_LONG).show();
-                if(message.equals("Success") ){
+                if(message.equals("Success")){
                     loading.dismiss();
                     showSuccessMessage();
 
-                }else if(message.equals("Invalid Credentials")){
+                }else if(message.equals(null)){
                     loading.dismiss();
-                    Toast.makeText(MainActivity.this,"Login Failed!" + message  + response,Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"Login Failed! Invalid Credentials." + message  + response,Toast.LENGTH_LONG).show();
                 }else{
                     loading.dismiss();
-
                 }
 
             }

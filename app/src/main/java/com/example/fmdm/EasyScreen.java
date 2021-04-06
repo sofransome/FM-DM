@@ -418,7 +418,7 @@ public class EasyScreen extends AppCompatActivity {
 
 
         while (true){
-            int num = random.nextInt(50);
+            int num = random.nextInt(8);
             if(set.contains(num) == false){
                 set.add(num);
                 Log.e("Size of Set: ", String.valueOf(set.size()));
@@ -563,6 +563,7 @@ public class EasyScreen extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 post_Data();
+                dialog.cancel();
 
                 Intent intent = new Intent(EasyScreen.this,LevelsScreen.class);
                 intent.putExtra("easy_score",score_Easy);
