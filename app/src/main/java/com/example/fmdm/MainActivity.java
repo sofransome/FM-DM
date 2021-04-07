@@ -70,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d("Response: ", response);
+                JSONObject jObject = null;
                 try {
-                    JSONObject jObject = new JSONObject(response);
+                    jObject = new JSONObject(response);
                     JSONObject user = jObject.getJSONObject("user");
-                    message = jObject.getString("message");
+                    message = (String)user.getString("message");
                     idnumber = (String)user.getString("id");
                     firstName = (String)user.getString("first_name");
                     lastName = (String)user.getString("last_name");
@@ -82,13 +83,15 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Log.e("Message: ", message);
+
                 if(message.equals("Success")){
                     loading.dismiss();
                     showSuccessMessage();
 
-                }else if(message.equals(null)){
+                }else if(message.equals("Invalid Credentials")){
                     loading.dismiss();
-                    Toast.makeText(MainActivity.this,"Login Failed! Invalid Credentials." + message  + response,Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"Login Failed! Invalid Credentials.",Toast.LENGTH_LONG).show();
                 }else{
                     loading.dismiss();
                 }
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this,"Error: "  + error.getMessage(),Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this,"Error: "  + error.getMessage(),Toast.LENGTH_LONG).show();
 
             }
         }){

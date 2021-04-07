@@ -29,15 +29,14 @@ import java.util.UUID;
 public class TutorialScreen extends AppCompatActivity {
 
 
-    static final UUID mUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    char x;
-    ;
+
+
+
     ArrayList<Character> input = new ArrayList<Character>();
     ArrayList<Float> values = new ArrayList<Float>();
-    float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
+    float pinky,ring,middle,index,thumb,port1,port2,port3,port4, port5, port6, port7;
     long delay = 1000;
     StringBuilder messages;
-
 
 
     public ImageView imgViewQuestion;
@@ -79,9 +78,10 @@ public class TutorialScreen extends AppCompatActivity {
 
 //        tutorialBtn = (Button)findViewById(R.id.tutorial_submit);
 //        tutorialBtn.setEnabled(true);
-        setImage();
+
         messages = new StringBuilder();
         LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+        setImage();
 
 
     }
@@ -119,33 +119,36 @@ public class TutorialScreen extends AppCompatActivity {
             float getFloat = Float.parseFloat(text);
             values.add(getFloat);
             input.clear();
-            if (values.size() == 5) {
-                thumb = values.get(0);
-                index = values.get(1);
-                middle = values.get(2);
-                ring = values.get(3);
-                pinky = values.get(4);
-//                contact1 = values.get(5);
-//                contact2 = values.get(6);
-//                contact3 = values.get(7);
-//                contact4 = values.get(8);
-//                contact5 = values.get(9);
-//                contact6 = values.get(10);
+            if (values.size() == 12) {
+                port1 = values.get(0);
+                port2 = values.get(1);
+                port3 = values.get(2);
+                port4 = values.get(3);
+                port5 = values.get(4);
+                port6 = values.get(5);
+                port7 = values.get(6);
+                thumb = values.get(7);
+                index = values.get(8);
+                middle = values.get(9);
+                ring = values.get(10);
+                pinky = values.get(11);
+
                 values.clear();
 
+                System.out.println("port1: " + port1);
+                System.out.println("port2: " + port2);
+                System.out.println("port3: " + port3);
+                System.out.println("port4: " + port4);
+                System.out.println("port5: " + port5);
+                System.out.println("port6: " + port6);
+                System.out.println("port7: " + port7);
                 System.out.println("thumb: " + thumb);
                 System.out.println("index: " + index);
                 System.out.println("middle: " + middle);
                 System.out.println("ring: " + ring);
                 System.out.println("pinky: " + pinky);
-//                System.out.println("contact1: " + contact1);
-//                System.out.println("contact2: " + contact2);
-//                System.out.println("contact3: " + contact3);
-//                System.out.println("contact4: " + contact4);
-//                System.out.println("contact5: " + contact5);
-//                System.out.println("contact6: " + contact6);
                 //a
-                if((thumb>=2.86 && thumb<=2.98) && (index>=2.74 && index<=2.95) && (middle>=2.82 && middle<=2.95) && (ring>=2.80 && ring<=3.10) && (pinky>=3.00  && pinky<=3.40) && (contact1 == 1.00)){
+                if((thumb>=2.86 && thumb<=2.98) && (index>=2.74 && index<=2.95) && (middle>=2.82 && middle<=2.95) && (ring>=2.80 && ring<=3.10) && (pinky>=3.00  && pinky<=3.40) && (port1 == 1.00)){
                     Message message = Message.obtain();
 
                     Bundle bundle = new Bundle();
@@ -163,7 +166,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //c
-                if((thumb>=3.20 && thumb<=3.50) && (index>=2.95 && index<=3.10) && (middle>=3.10 && middle<=3.25) && (ring>=3.25 && ring<=3.45) && (pinky>=3.40 && pinky<=3.60)&&(contact2==2.00)){
+                if((thumb>=3.20 && thumb<=3.50) && (index>=2.95 && index<=3.10) && (middle>=3.10 && middle<=3.25) && (ring>=3.25 && ring<=3.45) && (pinky>=3.40 && pinky<=3.60)&&(port2==2.00)){
                     Message message = Message.obtain();
 //
                     Bundle bundle = new Bundle();
@@ -172,7 +175,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //d
-                if((thumb>=3.30 && thumb<=3.45) && (index>=3.20 && index<=3.36) && (middle>=3.20 && middle<=3.43) && (ring>=3.40 && ring<=3.65) && (pinky>=3.38 && pinky<=3.55) && (contact3==3.00)){
+                if((thumb>=3.30 && thumb<=3.45) && (index>=3.20 && index<=3.36) && (middle>=3.20 && middle<=3.43) && (ring>=3.40 && ring<=3.65) && (pinky>=3.38 && pinky<=3.55) && (port3==3.00)){
                     Message message = Message.obtain();
 
                     Bundle bundle = new Bundle();
@@ -199,7 +202,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //g
-                if((thumb>=3.00 && thumb<=3.20) && (index>=2.82 && index<=3.05) && (middle>=2.82 && middle<=3.15) && (ring>=3.60 && ring<=3.80) && (pinky>=3.20 && pinky<=3.51)&&(contact3==3.00)){
+                if((thumb>=3.00 && thumb<=3.20) && (index>=2.82 && index<=3.05) && (middle>=2.82 && middle<=3.15) && (ring>=3.60 && ring<=3.80) && (pinky>=3.20 && pinky<=3.51)&&(port3==3.00)){
                     Message message = Message.obtain();
 
                     Bundle bundle = new Bundle();
@@ -226,7 +229,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //j
-                if((thumb>=3.40 && thumb<=3.60) && (index>=2.90 && index<=3.10) && (middle>=2.85 && middle<=3.05) && (ring>=2.90 && ring<=3.10) && (pinky>=3.15 && pinky<=3.30)&&(contact6==6.00)){
+                if((thumb>=3.40 && thumb<=3.60) && (index>=2.90 && index<=3.10) && (middle>=2.85 && middle<=3.05) && (ring>=2.90 && ring<=3.10) && (pinky>=3.15 && pinky<=3.30)&&(port6==6.00)){
                     Message message = Message.obtain();
 
                     Bundle bundle = new Bundle();
@@ -262,7 +265,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //n
-                if((thumb>=2.90 && thumb<=3.15) && (index>=2.95 && index<=3.15) && (middle>=2.90 && middle<=3.15) && (ring>=2.90 && ring<=3.15) && (pinky>=3.00 && pinky<=3.25)&&(contact3==3.00)){
+                if((thumb>=2.90 && thumb<=3.15) && (index>=2.95 && index<=3.15) && (middle>=2.90 && middle<=3.15) && (ring>=2.90 && ring<=3.15) && (pinky>=3.00 && pinky<=3.25)&&(port3==3.00)){
                     Message message = Message.obtain();
 //
                     Bundle bundle = new Bundle();
@@ -271,7 +274,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //o
-                if((thumb>=3.00 && thumb<=3.30) && (index>=3.10 && index<=3.25) && (middle>=3.07 && middle<=3.21) && (ring>=3.10 && ring<=3.30) && (pinky>=3.28 && pinky<=3.42)&&(contact3 ==3.00)){
+                if((thumb>=3.00 && thumb<=3.30) && (index>=3.10 && index<=3.25) && (middle>=3.07 && middle<=3.21) && (ring>=3.10 && ring<=3.30) && (pinky>=3.28 && pinky<=3.42)&&(port3 ==3.00)){
                     Message message = Message.obtain();
 //
                     Bundle bundle = new Bundle();
@@ -298,7 +301,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //r
-                if((thumb>=2.80 && thumb<=3.15) && (index>=2.60 && index<=2.99) && (middle>=3.10 && middle<=3.25) && (ring>=3.45 && ring<=3.70) && (pinky>=3.20 && pinky<=3.45)&&(contact4==4.00)) {
+                if((thumb>=2.80 && thumb<=3.15) && (index>=2.60 && index<=2.99) && (middle>=3.10 && middle<=3.25) && (ring>=3.45 && ring<=3.70) && (pinky>=3.20 && pinky<=3.45)&&(port4==4.00)) {
                     Message message = Message.obtain();
 //
                     Bundle bundle = new Bundle();
@@ -307,7 +310,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //s
-                if((thumb>=2.84 && thumb<=2.99) && (index>=2.76 && index<=2.91) && (middle>=2.75 && middle<=2.90) && (ring>=2.76 && ring<=2.91) && (pinky>=3.12 && pinky<=3.27)&&(contact4==4.00)) {
+                if((thumb>=2.84 && thumb<=2.99) && (index>=2.76 && index<=2.91) && (middle>=2.75 && middle<=2.90) && (ring>=2.76 && ring<=2.91) && (pinky>=3.12 && pinky<=3.27)&&(port4==4.00)) {
                     Message message = Message.obtain();
 //
                     Bundle bundle = new Bundle();
@@ -325,7 +328,7 @@ public class TutorialScreen extends AppCompatActivity {
                     handler.sendMessage(message);
                 }
                 //u
-                if((thumb>=3.00 && thumb<=3.32) && (index>=2.75 && index<=2.95) && (middle>=3.50 && middle<=3.65) && (ring>=3.58 && ring<=3.73) && (pinky>=3.30 && pinky<=3.48) && (contact2 == 2.0)) {
+                if((thumb>=3.00 && thumb<=3.32) && (index>=2.75 && index<=2.95) && (middle>=3.50 && middle<=3.65) && (ring>=3.58 && ring<=3.73) && (pinky>=3.30 && pinky<=3.48) && (port2 == 2.0)) {
                     Message message = Message.obtain();
 //
                     Bundle bundle = new Bundle();
@@ -384,7 +387,6 @@ public class TutorialScreen extends AppCompatActivity {
 //                                        }
 //                                    },delay);
 
-
                     handler.sendMessage(message);
                 }
             }
@@ -403,10 +405,10 @@ public class TutorialScreen extends AppCompatActivity {
             //score = 35
             if(score==35){
 
-//                Intent intent = new Intent(TutorialScreen.this,LevelsScreen.class);
-//                intent.putExtra("studentID",idnumber);
-//                startActivity(intent);
-//                finish();
+                Intent intent = new Intent(TutorialScreen.this,LevelsScreen.class);
+                intent.putExtra("studentID",idnumber);
+                startActivity(intent);
+                finish();
             }
             setImage();
 

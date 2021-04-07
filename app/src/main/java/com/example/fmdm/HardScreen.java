@@ -62,7 +62,7 @@ public class HardScreen extends AppCompatActivity {
 
     Context context;
     Question[] hardQuestionArray;
-    String[][] hardArray = new String[30][2];
+    String[][] hardArray = new String[51][2];
 
     long START_TIME_IN_MILLIS = 30000;
 
@@ -422,7 +422,7 @@ public class HardScreen extends AppCompatActivity {
         Random random = new Random();
 
         while (true){
-            int num = random.nextInt(1);
+            int num = random.nextInt(50);
             if(set.contains(num) == false){
                 set.add(num);
                 Log.e("Size of Set: ", String.valueOf(set.size()));
@@ -490,9 +490,9 @@ public class HardScreen extends AppCompatActivity {
     }
 
     public  void submitAnswer_Hard(View view){
-        hard_String = editText_Hard.getText().toString();
+        hard_String = editText_Hard.getText().toString().toLowerCase();
 
-        if(correctAnswer_Hard.equals(hard_String)){
+        if(correctAnswer_Hard.toLowerCase().equals(hard_String)){
             score_Hard++;
             tv_scoreHard.setText("Score: " + String.valueOf(score_Hard));
             correct();

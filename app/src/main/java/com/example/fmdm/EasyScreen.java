@@ -392,14 +392,6 @@ public class EasyScreen extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", "z");
                     message.setData(bundle);
-
-//                                    new Timer().schedule(new TimerTask() {
-//                                        @Override
-//                                        public void run() {
-//                                        }
-//                                    },delay);
-
-
                     handler.sendMessage(message);
                 }
             }
