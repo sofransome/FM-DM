@@ -260,33 +260,35 @@ public class BluetoothConnectionService {
             while (true) {
                 // Read from the InputStream
 
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream))){
-                    String incomingMessage = null;
-                    while((incomingMessage = reader.readLine()) != null) {
-                        System.out.println(incomingMessage);
-
-                        Intent incomingMessageIntent = new Intent("incomingMessage");
-                        incomingMessageIntent.putExtra("theMessage", incomingMessage);
-                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
-                    }
-                } catch(IOException e) {
-                    Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
-                    break;
-                }
-//                try {
-//                    bytes = mmInStream.read(buffer,0,1);
-//                    String incomingMessage = new String(buffer, 0, bytes);
+//                try (BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream))){
+//                    String incomingMessage = null;
+//                    while((incomingMessage = reader.readLine()) != null) {
+//                        System.out.println(incomingMessage);
+//                        Log.d("INCOMING" , incomingMessage);
 //
-//                    Log.d(TAG, "InputStream: " + incomingMessage);
-//                    System.out.println("INPUTSTREAM : " + incomingMessage);
-//
-//                    Intent incomingMessageIntent = new Intent("incomingMessage");
-//                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
-//                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
-//                } catch (IOException e) {
+//                        Intent incomingMessageIntent = new Intent("incomingMessage");
+//                        incomingMessageIntent.putExtra("theMessage", incomingMessage);
+//                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+//                    }
+//                } catch(IOException e) {
 //                    Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
 //                    break;
 //                }
+                try {
+//                    bytes = mmInStream.read(buffer,0,1);
+                    bytes = mmInStream.read(buffer);
+                    String incomingMessage = new String(buffer, 0, bytes);
+
+                    Log.d(TAG, "InputStream: " + incomingMessage);
+                    System.out.println("INPUTSTREAM : " + incomingMessage);
+
+                    Intent incomingMessageIntent = new Intent("incomingMessage");
+                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+                } catch (IOException e) {
+                    Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
+                    break;
+                }
             }
         }
 
