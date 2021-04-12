@@ -78,7 +78,7 @@ public class HardScreen extends AppCompatActivity {
     boolean TimerRunning;
     long TimeLeftInMillis = START_TIME_IN_MILLIS;
     String correctAnswer_Hard,hard_String,idnumber,firstName,lastName,temp = "",difficulty = "hard",grading = "1";
-    int score_Easy, score_Medium, score_Hard;
+    int score_Easy, score_Medium, score_Hard, hardCounter;
     Set<Integer> set = new HashSet<>();
 
     @Override
@@ -453,6 +453,7 @@ public class HardScreen extends AppCompatActivity {
 
                 for(int r=0; r < hardQuestionArray.length; r++){
                     Question question = hardQuestionArray[r];
+                    hardCounter++;
 
 
                     for(int c=0; c < 2; c++){
@@ -587,16 +588,17 @@ public class HardScreen extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 loading.dismiss();
                 Log.d("idnumber : " , idnumber);
-                Log.d("firstname: " , firstName);
-                Log.d("lastname : " , lastName);
+//                Log.d("firstname: " , firstName);
+//                Log.d("lastname : " , lastName);
                 Log.d("difficulty : " , difficulty);
-                Log.d("grading : " , grading);
+//                Log.d("grading : " , grading);
                 Log.d("score : " , String.valueOf(score_Medium));
                 Map<String, String> params = new HashMap<>();
                 params.put("student_id",idnumber);
                 params.put("difficulty",difficulty);
-                params.put("result",String.valueOf(score_Medium));
-                params.put("grading",grading);
+                params.put("result",String.valueOf(score_Hard));
+                params.put("total",String.valueOf(hardCounter));
+//                params.put("grading",grading);
 
                 return params;
             }

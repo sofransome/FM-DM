@@ -71,7 +71,7 @@ public class EasyScreen extends AppCompatActivity {
     TextView textView_Easy,textView_forNum,tv_scoreEasy;
     EditText editText_Easy;
     String correctAnswer_Easy,easy_String,idnumber,firstName,lastName,temp = "",difficulty = "easy",grading = "1";
-    int score_Easy;
+    int score_Easy,easyCounter;
     Set<Integer> set = new HashSet<>();
 
 
@@ -96,8 +96,8 @@ public class EasyScreen extends AppCompatActivity {
         editText_Easy = (EditText)findViewById(R.id.edittext_Easy);
 
 
-        messages = new StringBuilder();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+//        messages = new StringBuilder();
+//        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
         easyRequest();
 
         tv_scoreEasy.setText("Score: " + String.valueOf(score_Easy));
@@ -398,7 +398,7 @@ public class EasyScreen extends AppCompatActivity {
         }
     };
 
-    //tail
+//    tail
 
 
 
@@ -410,7 +410,7 @@ public class EasyScreen extends AppCompatActivity {
 
 
         while (true){
-            int num = random.nextInt(8);
+            int num = random.nextInt(easyCounter);
             if(set.contains(num) == false){
                 set.add(num);
                 Log.e("Size of Set: ", String.valueOf(set.size()));
@@ -445,6 +445,8 @@ public class EasyScreen extends AppCompatActivity {
 
                 for(int r=0; r < easyImageArray.length; r++){
                     Image easy = easyImageArray[r];
+                    easyCounter++;
+                    Log.d("EZCOUNTER::::", String.valueOf(easyCounter));
 
 
                     for(int c=0; c < 2; c++){
@@ -662,16 +664,17 @@ public class EasyScreen extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 loading.dismiss();
                 Log.d("idnumber : " , idnumber);
-                Log.d("firstname: " , firstName);
-                Log.d("lastname : " , lastName);
+//                Log.d("firstname: " , firstName);
+//                Log.d("lastname : " , lastName);
                 Log.d("difficulty : " , difficulty);
-                Log.d("grading : " , grading);
+                Log.d("easyCounter : " , String.valueOf(easyCounter));
                 Log.d("score : " , String.valueOf(score_Easy));
                 Map<String, String> params = new HashMap<>();
                 params.put("student_id",idnumber);
                 params.put("difficulty",difficulty);
                 params.put("result",String.valueOf(score_Easy));
-                params.put("grading",grading);
+                params.put("total",String.valueOf(easyCounter));
+//                params.put("grading",grading);
 
                 return params;
             }

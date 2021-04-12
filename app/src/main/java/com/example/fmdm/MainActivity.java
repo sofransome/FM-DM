@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         loading.setCanceledOnTouchOutside(false);
         loading.show();
 
+
+
         StringRequest stringReq =  new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
 
@@ -82,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                Log.e("Message: ", message);
 
                 if(message.equals("Success")){
                     loading.dismiss();
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 return params;
             }
         };
+
         requestQueue.add(stringReq);
 
     }
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     public void showSuccessMessage(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Sign in");
-        alert.setMessage(firstName + " " + lastName +  "Successfully Signin!");
+        alert.setMessage(firstName + " " + lastName +  " Successfully Signin!");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

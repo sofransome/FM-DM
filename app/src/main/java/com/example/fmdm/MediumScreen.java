@@ -73,7 +73,7 @@ public class MediumScreen extends AppCompatActivity {
     TextView textView_Medium,textView_forNum,tv_scoreMedium;
     EditText editText_Medium;
     String correctAnswer_Medium, username,medium_String,idnumber,firstName,lastName,temp = "",difficulty = "medium",grading = "1";
-    int easy_score2, score_Medium;
+    int easy_score2, score_Medium, mediumCounter;
     Set<Integer> set = new HashSet<>();
 
 
@@ -418,7 +418,7 @@ Handler handler = new Handler(new Handler.Callback() {
 
 
         while (true){
-            int num = random.nextInt(6);
+            int num = random.nextInt(mediumCounter);
             if(set.contains(num) == false){
                 set.add(num);
                 Log.e("Size of Set: ", String.valueOf(set.size()));
@@ -453,6 +453,7 @@ Handler handler = new Handler(new Handler.Callback() {
 
                 for(int r=0; r < mediumImageArray.length; r++){
                     Image easy = mediumImageArray[r];
+                    mediumCounter++;
 
 
                     for(int c=0; c < 2; c++){
@@ -677,13 +678,14 @@ Handler handler = new Handler(new Handler.Callback() {
 //                Log.d("firstname: " , firstName);
 //                Log.d("lastname : " , lastName);
                 Log.d("difficulty : " , difficulty);
-                Log.d("grading : " , grading);
+//                Log.d("grading : " , grading);
                 Log.d("score : " , String.valueOf(score_Medium));
                 Map<String, String> params = new HashMap<>();
                 params.put("student_id",idnumber);
                 params.put("difficulty",difficulty);
                 params.put("result",String.valueOf(score_Medium));
-                params.put("grading",grading);
+                params.put("total",String.valueOf(mediumCounter));
+//                params.put("grading",grading);
 
                 return params;
             }

@@ -211,7 +211,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
 //        incomingMessages = (TextView)findViewById(R.id.incomingMessage);
         messages = new StringBuilder();
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("tmp_msg"));
 
         //Broadcasts when bond state changes (ie:pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
@@ -264,8 +264,8 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
         @Override
         public void onReceive(Context context, Intent intent) {
             String text = intent.getStringExtra("theMessage");
-
-            messages.append(text + "\n");
+            Log.d(TAG, "InputStream: " + text);
+//            messages.append(text + "\n");
         }
     };
 
@@ -415,7 +415,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
 
     }
     public void next(View view){
-        Intent intent = new Intent(ConnectingDevicesInstruction.this,HardScreen.class);
+        Intent intent = new Intent(ConnectingDevicesInstruction.this,EasyScreen.class);
         intent.putExtra("studentID",idnumber);
         intent.putExtra("firstName",firstName);
         intent.putExtra("lastName",lastName);
