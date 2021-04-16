@@ -7,8 +7,12 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.BufferedReader;
@@ -17,6 +21,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class BluetoothConnectionService {
@@ -29,6 +35,10 @@ public class BluetoothConnectionService {
 
 //    private static final UUID MY_UUID_INSECURE =
 //            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+
+    String temp = "";
+
+    float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
 
     private final BluetoothAdapter mBluetoothAdapter;
     Context mContext;
@@ -252,7 +262,9 @@ public class BluetoothConnectionService {
 
         public void run(){
             byte[] buffer = new byte[1024];  // buffer store for the stream
-            StringBuilder readMessage = new StringBuilder();
+            StringBuilder finalMessage = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
+            String appendedString,finalString;
 
             int bytes; // bytes returned from read()
 
@@ -274,20 +286,143 @@ public class BluetoothConnectionService {
 //                    Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
 //                    break;
 //                }
+
                 try {
-//                    bytes = mmInStream.read(buffer,0,1);
-                    bytes = mmInStream.read(buffer);
-                    String incomingMessage = new String(buffer, 0, bytes);
 
-                    Log.d(TAG, "InputStream: " + incomingMessage);
-                    System.out.println("INPUTSTREAM : " + incomingMessage);
+//                    bytes = mmInStream.read(buffer);
 
-                    Intent incomingMessageIntent = new Intent("incomingMessage");
-                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
-                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+
+//                    char firstChar = incomingMessage.charAt(0);
+//                    char lastChar = incomingMessage.charAt(incomingMessage.length()-1);
+                    char sb_First = 0, sb_Last = 0;
+//                    char sbFirst = stringBuilder.charAt(0);
+//                    char sbLast = stringBuilder.charAt(stringBuilder.length()-1);
+
+                    do {
+                        bytes = mmInStream.read(buffer,0,4);
+                        String incomingMessage = new String(buffer, 0, bytes);
+//                        Log.d("INCOMING" , incomingMessage);
+                        System.out.println("The OUTPUT: " + incomingMessage);
+                        stringBuilder.append(incomingMessage);
+                        if(stringBuilder.charAt(0) != 'a'){
+                            stringBuilder.setLength(0);
+                        }
+
+                        System.out.println(String.valueOf(stringBuilder));
+                        if(stringBuilder.length() > 0){
+                        char sbFirst = stringBuilder.charAt(0);
+                        char sbLast = stringBuilder.charAt(stringBuilder.length()-1);
+                        sb_First = sbFirst;
+                        sb_Last = sbLast;
+                        }
+                        if(stringBuilder.length() >= 46 && !String.valueOf(sb_Last).equals("b")){
+                            stringBuilder.setLength(0);
+                        }
+                    }while (String.valueOf(sb_First).equals("a") && !String.valueOf(sb_Last).equals("b"));
+
+                    if(stringBuilder.length() == 46) {
+                        appendedString = String.valueOf(stringBuilder);
+                        stringBuilder.setLength(0);
+                        finalString = removeFirstandLast(appendedString);
+                        System.out.println(finalString);
+
+                        List<String> strings = new ArrayList<String>();
+                        int i = 0;
+                        while (i < finalString.length()) {
+                            strings.add(finalString.substring(i, Math.min(i + 4,finalString.length())));
+                            i += 4;
+                        }
+
+
+
+
+                        thumb = Float.parseFloat(strings.get(0));
+                        index = Float.parseFloat(strings.get(1));
+                        middle = Float.parseFloat(strings.get(2));
+                        ring = Float.parseFloat(strings.get(3));
+                        pinky = Float.parseFloat(strings.get(4));
+                        contact1 = Float.parseFloat(strings.get(5));
+                        contact2 = Float.parseFloat(strings.get(6));
+                        contact3 = Float.parseFloat(strings.get(7));
+                        contact4 = Float.parseFloat(strings.get(8));
+                        contact5 = Float.parseFloat(strings.get(9));
+                        contact6 = Float.parseFloat(strings.get(10));
+
+                        System.out.println("thumb: " + thumb);
+                        System.out.println("i: " + index);
+                        System.out.println("middle: " + middle);
+                        System.out.println("ring: " + ring);
+                        System.out.println("pinky: " + pinky);
+                        System.out.println("contact1: " + contact1);
+                        System.out.println("contact2: " + contact2);
+                        System.out.println("contact3: " + contact3);
+                        System.out.println("contact4: " + contact4);
+                        System.out.println("contact5: " + contact5);
+                        System.out.println("contact6: " + contact6);
+
+                        //a
+                        if((thumb>=1.00 && thumb<=1.00) && (index>=1.00 && index<=1.00) && (middle>=1.00 && middle<=1.00) && (ring>=1.00 && ring<=1.00) && (pinky>=1.00  && pinky<=1.00)){
+                            Message message = Message.obtain();
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("key", "a");
+                            message.setData(bundle);
+                            handler.sendMessage(message);
+                        }
+
+
+                    }
+
+
+
+//                    Log.d(TAG, "InputStream: " + incomingMessage);
+//                    System.out.println("INPUTSTREAM : " + incomingMessage);
+
+                    //another 1
+
+//                    while(true){
+//                        char firstFinal = finalMessage.charAt(0);
+//                        char lastFinal = finalMessage.charAt(finalMessage.length()-1);
+//                        if(String.valueOf(firstChar).equals("&") && !String.valueOf(lastChar).equals("*")){
+//                            finalMessage.append(incomingMessage);
+//
+//
+//                        }else if(String.valueOf(firstFinal).equals("&") && String.valueOf(lastFinal).equals("*")){
+//                            finalString = String.valueOf(finalMessage);
+//                            finalMessage.setLength(0);
+//
+//                            String[] array = finalString.split("(?<=\\G...)");
+//
+//                            thumb = Float.parseFloat(array[0]);
+//                            index = Float.parseFloat(array[1]);
+//                            middle = Float.parseFloat(array[2]);
+//                            ring = Float.parseFloat(array[3]);
+//                            pinky = Float.parseFloat(array[4]);
+//                            contact1 = Float.parseFloat(array[5]);
+//                            contact2 = Float.parseFloat(array[6]);
+//                            contact3 = Float.parseFloat(array[7]);
+//                            contact4 = Float.parseFloat(array[8]);
+//                            contact5 = Float.parseFloat(array[9]);
+//                            contact6 = Float.parseFloat(array[10]);
+//
+//
+//                        }else{
+//                            //need to try
+//                            //finalMessage.setLength(0);
+//                        }
+//                        break;
+//                    }
+
+
+
+
+//                    Intent incomingMessageIntent = new Intent("incomingMessage");
+//                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
+//                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+
                 } catch (IOException e) {
                     Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
-                    break;
+//                    break;
                 }
             }
         }
@@ -334,4 +469,43 @@ public class BluetoothConnectionService {
         //perform the write
         mConnectedThread.write(out);
     }
+
+    public static String removeFirstandLast(String str)
+    {
+
+        // Creating a StringBuilder object
+        StringBuilder sb = new StringBuilder(str);
+
+        // Removing the last character
+        // of a string
+        sb.deleteCharAt(str.length() - 1);
+
+        // Removing the first character
+        // of a string
+        sb.deleteCharAt(0);
+
+        // Converting StringBuilder into a string
+        // and return the modified string
+        return sb.toString();
+    }
+
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message msg) {
+            Bundle bundle = msg.getData();
+            String text = bundle.getString("key");
+            if(text!= temp){
+                System.out.println(text);
+                Log.d(TAG, "LETTER: " + text);
+                Intent incomingMessageIntent = new Intent("incomingMessage");
+                incomingMessageIntent.putExtra("theMessage", text);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+
+                temp = text;
+            }
+
+
+            return false;
+        }
+    });
 }

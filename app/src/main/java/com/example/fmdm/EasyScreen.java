@@ -63,7 +63,7 @@ public class EasyScreen extends AppCompatActivity {
 
 
     ArrayList<Character> input = new ArrayList<Character>();
-    ArrayList<Float> values = new ArrayList<Float>();
+                    ArrayList<Float> values = new ArrayList<Float>();
     float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
 
 
@@ -96,8 +96,8 @@ public class EasyScreen extends AppCompatActivity {
         editText_Easy = (EditText)findViewById(R.id.edittext_Easy);
 
 
-//        messages = new StringBuilder();
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
+        messages = new StringBuilder();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("incomingMessage"));
         easyRequest();
 
         tv_scoreEasy.setText("Score: " + String.valueOf(score_Easy));

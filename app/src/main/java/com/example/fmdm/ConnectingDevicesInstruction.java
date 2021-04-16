@@ -6,6 +6,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -38,7 +39,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
     Button btnEnableDisable_Discoverable;
 
     BluetoothConnectionService mBluetoothConnection;
-    String idnumber,firstName,lastName;
+    String idnumber,firstName,lastName,text;
 
     Button btnStartConnection;
     Button btnSend;
@@ -46,7 +47,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
     EditText etSend;
 
 
-    public static StringBuilder messages;
+
 
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -205,11 +206,8 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
         idnumber = getIntent().getStringExtra("studentID");
         firstName = getIntent().getStringExtra("firstName");
         lastName = getIntent().getStringExtra("lastName");
-//        btnSend = (Button) findViewById(R.id.btnSend);
-//        btnNext = (Button)findViewById(R.id.btnNext);
-//        etSend = (EditText) findViewById(R.id.editText);
-//        incomingMessages = (TextView)findViewById(R.id.incomingMessage);
-        messages = new StringBuilder();
+
+
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("tmp_msg"));
 
@@ -235,6 +233,17 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
             public void onClick(View view) {
                 startConnection();
                 showSuccessMessage();
+
+//                final ProgressDialog loading = new ProgressDialog(ConnectingDevicesInstruction.this);
+//                loading.setMessage("Connecting Please Wait...");
+//                loading.setCanceledOnTouchOutside(false);
+//                loading.show();
+//
+//                if(!text.equals(null) || text.length() > 0){
+//                    loading.dismiss();
+//                    showSuccessMessage();
+//                }
+
 
             }
         });
@@ -263,9 +272,9 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
     BroadcastReceiver mReciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String text = intent.getStringExtra("theMessage");
+             text = intent.getStringExtra("theMessage");
             Log.d(TAG, "InputStream: " + text);
-//            messages.append(text + "\n");
+
         }
     };
 
@@ -415,7 +424,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
 
     }
     public void next(View view){
-        Intent intent = new Intent(ConnectingDevicesInstruction.this,EasyScreen.class);
+        Intent intent = new Intent(ConnectingDevicesInstruction.this,TutorialScreen.class);
         intent.putExtra("studentID",idnumber);
         intent.putExtra("firstName",firstName);
         intent.putExtra("lastName",lastName);
