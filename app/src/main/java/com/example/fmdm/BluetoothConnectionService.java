@@ -38,7 +38,7 @@ public class BluetoothConnectionService {
 
     String temp = "";
 
-    float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6;
+    float pinky,ring,middle,index,thumb,contact1,contact2,contact3,contact4, contact5, contact6, contact7;
 
     private final BluetoothAdapter mBluetoothAdapter;
     Context mContext;
@@ -299,7 +299,7 @@ public class BluetoothConnectionService {
 //                    char sbLast = stringBuilder.charAt(stringBuilder.length()-1);
 
                     do {
-                        bytes = mmInStream.read(buffer,0,4);
+                        bytes = mmInStream.read(buffer,0,1);
                         String incomingMessage = new String(buffer, 0, bytes);
 //                        Log.d("INCOMING" , incomingMessage);
                         System.out.println("The OUTPUT: " + incomingMessage);
@@ -308,19 +308,19 @@ public class BluetoothConnectionService {
                             stringBuilder.setLength(0);
                         }
 
-                        System.out.println(String.valueOf(stringBuilder));
+                        System.out.println("MY SB: " + String.valueOf(stringBuilder));
                         if(stringBuilder.length() > 0){
                         char sbFirst = stringBuilder.charAt(0);
                         char sbLast = stringBuilder.charAt(stringBuilder.length()-1);
                         sb_First = sbFirst;
                         sb_Last = sbLast;
                         }
-                        if(stringBuilder.length() >= 46 && !String.valueOf(sb_Last).equals("b")){
+                        if(stringBuilder.length() >= 50 && !String.valueOf(sb_Last).equals("b")){
                             stringBuilder.setLength(0);
                         }
                     }while (String.valueOf(sb_First).equals("a") && !String.valueOf(sb_Last).equals("b"));
 
-                    if(stringBuilder.length() == 46) {
+                    if(stringBuilder.length() == 50) {
                         appendedString = String.valueOf(stringBuilder);
                         stringBuilder.setLength(0);
                         finalString = removeFirstandLast(appendedString);
@@ -347,9 +347,10 @@ public class BluetoothConnectionService {
                         contact4 = Float.parseFloat(strings.get(8));
                         contact5 = Float.parseFloat(strings.get(9));
                         contact6 = Float.parseFloat(strings.get(10));
+                        contact7 = Float.parseFloat(strings.get(11));
 
                         System.out.println("thumb: " + thumb);
-                        System.out.println("i: " + index);
+                        System.out.println("index: " + index);
                         System.out.println("middle: " + middle);
                         System.out.println("ring: " + ring);
                         System.out.println("pinky: " + pinky);
@@ -359,6 +360,7 @@ public class BluetoothConnectionService {
                         System.out.println("contact4: " + contact4);
                         System.out.println("contact5: " + contact5);
                         System.out.println("contact6: " + contact6);
+                        System.out.println("contact7: " + contact7);
 
                         //a
                         if((thumb>=1.00 && thumb<=1.00) && (index>=1.00 && index<=1.00) && (middle>=1.00 && middle<=1.00) && (ring>=1.00 && ring<=1.00) && (pinky>=1.00  && pinky<=1.00)){
