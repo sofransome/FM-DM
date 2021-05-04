@@ -45,14 +45,11 @@ public class TutorialScreen extends AppCompatActivity {
     EditText et_answerfield;
     String correct_answer,tutorial_String,idnumber,firstName,lastName,temp = "";
     TextView textView;
-    int i=34,score=0;
+    int i=25,score=0;
     Button tutorialBtn;
 
 
     int[] image_list={
-            R.drawable.nine, R.drawable.eight, R.drawable.seven, R.drawable.six,
-            R.drawable.five, R.drawable.four, R.drawable.three, R.drawable.two,
-            R.drawable.one,
             R.drawable.z, R.drawable.y, R.drawable.x, R.drawable.w,
             R.drawable.v, R.drawable.u, R.drawable.t, R.drawable.s,
             R.drawable.r, R.drawable.q, R.drawable.p, R.drawable.o,
@@ -90,37 +87,18 @@ public class TutorialScreen extends AppCompatActivity {
 
 
 
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(@NonNull Message msg) {
-            Bundle bundle = msg.getData();
-            String text = bundle.getString("key");
-            if(text!= temp){
-                if (et_answerfield.getText().length() == 0){
-                    et_answerfield.setText(text);
-
-                }else{
-                    et_answerfield.setText(et_answerfield.getText().toString() + text);
-                }
-
-                temp = text;
-            }
-
-
-            return false;
-        }
-    });
 
     BroadcastReceiver mReciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String text = intent.getStringExtra("theMessage");
-            System.out.println("The OUTPUT letter: " + text);
+//            System.out.println("The OUTPUT letter: " + text);
             if (et_answerfield.getText().length() == 0){
                 et_answerfield.setText(text);
-
+                et_answerfield.setSelection(et_answerfield.getText().length());
             }else{
                 et_answerfield.setText(et_answerfield.getText().toString() + text);
+                et_answerfield.setSelection(et_answerfield.getText().length());
             }
 
 //            input.add(text.charAt(0));
@@ -417,7 +395,7 @@ public class TutorialScreen extends AppCompatActivity {
             correct();
             et_answerfield.setText("");
             //score = 35
-            if(score==35){
+            if(score==26){
 
                 Intent intent = new Intent(TutorialScreen.this,LevelsScreen.class);
                 intent.putExtra("studentID",idnumber);
@@ -443,27 +421,6 @@ public class TutorialScreen extends AppCompatActivity {
         correct_answer = getResources().getResourceName(imageSelected);
         correct_answer = correct_answer.substring(correct_answer.lastIndexOf("/")+1);
 
-        if(correct_answer.equals("one")){
-            correct_answer = "1";
-        }else if(correct_answer.equals("two")){
-            correct_answer = "2";
-        }else if(correct_answer.equals("three")){
-            correct_answer = "3";
-        }else if(correct_answer.equals("four")){
-            correct_answer = "4";
-        }else if(correct_answer.equals("five")){
-            correct_answer = "5";
-        }else if(correct_answer.equals("six")){
-            correct_answer = "6";
-        }else if(correct_answer.equals("seven")){
-            correct_answer = "7";
-        }else if(correct_answer.equals("eight")){
-            correct_answer = "8";
-        }else if(correct_answer.equals("nine")){
-            correct_answer = "9";
-        }else{
-            correct_answer = correct_answer;
-        }
         textView.setText(correct_answer);
         i--;
 

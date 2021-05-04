@@ -315,12 +315,12 @@ public class BluetoothConnectionService {
                         sb_First = sbFirst;
                         sb_Last = sbLast;
                         }
-                        if(stringBuilder.length() >= 50 && !String.valueOf(sb_Last).equals("b")){
+                        if(stringBuilder.length() >= 26 && !String.valueOf(sb_Last).equals("b")){
                             stringBuilder.setLength(0);
                         }
                     }while (String.valueOf(sb_First).equals("a") && !String.valueOf(sb_Last).equals("b"));
 
-                    if(stringBuilder.length() == 50) {
+                    if(stringBuilder.length() == 26) {
                         appendedString = String.valueOf(stringBuilder);
                         stringBuilder.setLength(0);
                         finalString = removeFirstandLast(appendedString);
@@ -342,12 +342,12 @@ public class BluetoothConnectionService {
                         ring = Float.parseFloat(strings.get(3));
                         pinky = Float.parseFloat(strings.get(4));
                         contact1 = Float.parseFloat(strings.get(5));
-                        contact2 = Float.parseFloat(strings.get(6));
-                        contact3 = Float.parseFloat(strings.get(7));
-                        contact4 = Float.parseFloat(strings.get(8));
-                        contact5 = Float.parseFloat(strings.get(9));
-                        contact6 = Float.parseFloat(strings.get(10));
-                        contact7 = Float.parseFloat(strings.get(11));
+//                        contact2 = Float.parseFloat(strings.get(6));
+//                        contact3 = Float.parseFloat(strings.get(7));
+//                        contact4 = Float.parseFloat(strings.get(8));
+//                        contact5 = Float.parseFloat(strings.get(9));
+//                        contact6 = Float.parseFloat(strings.get(10));
+//                        contact7 = Float.parseFloat(strings.get(11));
 
                         System.out.println("thumb: " + thumb);
                         System.out.println("index: " + index);
@@ -355,15 +355,15 @@ public class BluetoothConnectionService {
                         System.out.println("ring: " + ring);
                         System.out.println("pinky: " + pinky);
                         System.out.println("contact1: " + contact1);
-                        System.out.println("contact2: " + contact2);
-                        System.out.println("contact3: " + contact3);
-                        System.out.println("contact4: " + contact4);
-                        System.out.println("contact5: " + contact5);
-                        System.out.println("contact6: " + contact6);
-                        System.out.println("contact7: " + contact7);
+//                        System.out.println("contact2: " + contact2);
+//                        System.out.println("contact3: " + contact3);
+//                        System.out.println("contact4: " + contact4);
+//                        System.out.println("contact5: " + contact5);
+//                        System.out.println("contact6: " + contact6);
+//                        System.out.println("contact7: " + contact7);
 
                         //a
-                        if((thumb>=2.86 && thumb<=2.98) && (index>=2.74 && index<=2.95) && (middle>=2.82 && middle<=2.95) && (ring>=2.80 && ring<=3.10) && (pinky>=3.00  && pinky<=3.40) && (contact1 == 1.00)){
+                        if ((thumb >= 1.85 && thumb <= 1.95) && (index >= 2.90 && index <= 3.14) && (middle >= 2.90 && middle <= 3.00) && (ring >= 2.70 && ring <= 2.80) && (pinky >= 2.80 && pinky <= 2.90)) {
                             Message message = Message.obtain();
 
                             Bundle bundle = new Bundle();
@@ -371,15 +371,14 @@ public class BluetoothConnectionService {
                             message.setData(bundle);
                             handler.sendMessage(message);
                         }
-//                        //b
-//                        if((thumb>=3.25 && thumb<=3.60) && (index>=3.48 && index<=3.60) && (middle>=3.40 && middle<=3.65) && (ring>=3.45 && ring<=3.65) && (pinky>=3.15 && pinky<=3.40)){
-//                            Message message = Message.obtain();
-////
-//                            Bundle bundle = new Bundle();
-//                            bundle.putString("key", "b");
-//                            message.setData(bundle);
-//                            handler.sendMessage(message);
-//                        }
+                        //b
+                        if((thumb>= 1.95 && thumb<=2.05) && (index>=1.90 && index<=2.05) && (middle>=1.75 && middle<=1.90) && (ring>=1.86 && ring<=1.95) && (pinky>=1.87 && pinky<=1.95)){
+                            Message message = Message.obtain();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("key", "b");
+                            message.setData(bundle);
+                            handler.sendMessage(message);
+                        }
 //                        //c
 //                        if((thumb>=3.20 && thumb<=3.50) && (index>=2.95 && index<=3.10) && (middle>=3.10 && middle<=3.25) && (ring>=3.25 && ring<=3.45) && (pinky>=3.40 && pinky<=3.60)&&(contact2==2.00)){
 //                            Message message = Message.obtain();
@@ -730,6 +729,7 @@ public class BluetoothConnectionService {
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
 
                 temp = text;
+
             }
 
 

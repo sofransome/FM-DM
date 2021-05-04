@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 public class ConnectingDevicesInstruction extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -45,6 +47,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
     Button btnSend;
     Button btnNext;
     EditText etSend;
+    long delay = 5000;
 
 
 
@@ -209,7 +212,7 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
 
 
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("tmp_msg"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReciever, new IntentFilter("theMessage"));
 
         //Broadcasts when bond state changes (ie:pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
@@ -231,8 +234,21 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
         btnStartConnection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                final ProgressDialog loading = new ProgressDialog(ConnectingDevicesInstruction.this);
+//                loading.setMessage("Please Wait...");
+//                loading.setCanceledOnTouchOutside(false);
+//                loading.show();
+
                 startConnection();
-                showSuccessMessage();
+
+                showWaitingMessage();
+
+//                while(true) {
+//                    if(text.length() > 0) {
+//                        loading.dismiss();
+//                        showSuccessMessage();
+//                    }
+//                }
 
 //                final ProgressDialog loading = new ProgressDialog(ConnectingDevicesInstruction.this);
 //                loading.setMessage("Connecting Please Wait...");
@@ -407,16 +423,38 @@ public class ConnectingDevicesInstruction extends AppCompatActivity implements A
             @Override
             public void onClick(DialogInterface dialog, int which) {
 //                String kobe = "24";
-                byte b = 24;
 //                byte[] bytes = kobe.getBytes(StandardCharsets.UTF_8);
-                Log.d(TAG, "Im sending:  " + b);
-                mBluetoothConnection.write(b);
-                Intent intent = new Intent(ConnectingDevicesInstruction.this, InstructionScreen.class);
+//                byte b = 24;
+//                Log.d(TAG, "Im sending:  " + b);
+//                mBluetoothConnection.write(b);
+                Intent intent = new Intent(ConnectingDevicesInstruction.this, TutorialScreen.class);
                 intent.putExtra("studentID",idnumber);
                 intent.putExtra("firstName",firstName);
                 intent.putExtra("lastName",lastName);
                 startActivity(intent);
                 finish();
+//                onDestroy();
+            }
+        });
+        alert.create().show();
+
+    }
+
+    public void showWaitingMessage(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("You are now Connecting");
+        alert.setMessage("Please wait for a moment");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                byte b = 24;
+                Log.d(TAG, "Im sending:  " + b);
+                mBluetoothConnection.write(b);
+                System.out.println(" IM SENDING: " + String.valueOf(b));
+                showSuccessMessage();
+
+
 //                onDestroy();
             }
         });

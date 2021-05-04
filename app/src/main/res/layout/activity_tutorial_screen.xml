@@ -53,6 +53,7 @@
             android:layout_width="250sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5sp"
+            android:focusable="false"
              />
 
         <Button
